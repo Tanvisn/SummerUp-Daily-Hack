@@ -10,6 +10,7 @@ import Notifications from './Notifications.js';
 import {DrawerMenu} from './../components/drawer.js';
 import LoadingHomes from './LoadingHome.js';
 import Constants from 'expo-constants';
+import { url } from './../components/url';
 
 export default class Login extends React.Component{
   constructor(props){
@@ -23,36 +24,45 @@ export default class Login extends React.Component{
     this.storeInAsync = this.storeInAsync.bind(this);
   }
 
-  storeInAsync = async() =>{
+  storeInAsync = async(res) =>{
     await AsyncStorage.setItem('auth_data', JSON.stringify({
-      age: this.state.age,
-      name: this.state.name
+      age: res.age,
+      name: this.state.name,
+      fname: res.fName,
+      lname: res.lName,
+      email: res.email
     }));
   }
   handleLogin(){
 
-    if(Platform.OS === 'ios' || Platform.OS === 'android'){
+/*    if(Platform.OS === 'ios' || Platform.OS === 'android'){
       this.storeInAsync();
-      this.props.navigation.reset({
-        routes: [{ name: 'loading',params: {age: this.state.age, name:this.state.name}}]      
-      });
+
+      this.props.navigation.dispatch(
+        CommonActions.reset({
+          
+        routes: [
+                  {name: 'Login'} , 
+                  { name: 'loading',params: {age: this.state.age, name:this.state.name}},
+                ],  
+      }));
     }
-    else{
+    else{*/
     //send data to backend
     //Alert.alert("hiii");
-    console.log("hiii");
+    console.log(Date.now());
     const param1=this.state.name;
     const param2=this.state.pass;
-    console.log(param1);
-    fetch('http://localhost:9000/users',{
+    
+    fetch(url+'/login',{
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        name:param1,
-        pass:param2
+        userName:param1,
+        password:param2
       })
     })
 
@@ -65,23 +75,35 @@ export default class Login extends React.Component{
       //Alert.alert(res.message);
       //if login successful
       if(res.success === true){
-        this.state.age=res.age;
-        this.storeInAsync();
-        this.props.navigation.reset({
-          routes: [{ name: 'loading',params: {age: this.state.age, name:this.state.name}}]
+        //this.state.age=3;
+        if(Platform.OS === 'ios' || Platform.OS === 'android'){
+          this.storeInAsync(res);
+        }
+        else{
+        localStorage.setItem('auth_data', JSON.stringify({
+        //age: this.state.age,
+        name: this.state.name
+      }));
+      }  
+        this.props.navigation.dispatch(
+        CommonActions.reset({
           
-        });
+        routes: [
+                  {name: 'Login'} , 
+                  { name: 'loading',params: {age: res.age, name:this.state.name}},
+                ],  
+      }));
       }
       else {
-        alert("User doesn't exist");
-        console.warn("user doesn't exist");
+        alert("Incorrect Username or Password");
+        console.warn("Incorrect Username or Password");
       }
     })
     
     .catch(err => {
       console.log(err);
     });
-  }
+//  }
   //  this.props.navigation.navigate('loading', {age: this.state.age});
   }
 

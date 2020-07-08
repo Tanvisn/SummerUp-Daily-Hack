@@ -10,50 +10,23 @@ import Signup from './screens/Signup.js';
 import AdHome from './screens/AdHome.js';
 import Notifications from './screens/Notifications.js';
 import LoadingHomes from './screens/LoadingHome.js'
-import { AdHomeStack, NotifStack } from './components/createStack.js';
+import { AdHomeStack, NotifStack, ProfileStack, HelpCenter } from './components/createStack.js';
 
 const Stack = createStackNavigator();
 var isLoggedIn=false;var age=0;var name="";
 const Drawer = createDrawerNavigator();
 function DrawerMenu()
 {
-  if(age===1){
-  return(
-    //kid
-    <Drawer.Navigator>
-      <Drawer.Screen name="Home" component={AdHome} />
-      <Drawer.Screen name="Notifications" component={Notifications} />
-    </Drawer.Navigator>
-  )
-  }
-  else if(age===2){
   
   return(
-    //teen
-    <Drawer.Navigator>
-      <Drawer.Screen name="Home" component={AdHome} />
-      <Drawer.Screen name="Notifications" component={Notifications} />
-    </Drawer.Navigator>
-  )
-  }
-  else if(age===3){
-  return(
-  //adult
     <Drawer.Navigator>
       <Drawer.Screen name="Home" component={AdHomeStack}/>
       <Drawer.Screen name="Notifications" component={NotifStack} />
+      <Drawer.Screen name="Profile" component={ProfileStack} />
+      <Drawer.Screen name="HelpCenter" component={HelpCenter} />
     </Drawer.Navigator>
   )
-  }
-  else {
-    //elderly
-  return(
-    <Drawer.Navigator>
-      <Drawer.Screen name="Home" component={AdHome} />
-      <Drawer.Screen name="Notifications" component={Notifications} />
-    </Drawer.Navigator>
-  )
-  }
+  
 }
 
 
@@ -79,11 +52,11 @@ export default function App() {
       <Stack.Navigator >
         {isLoggedIn ? (
           <>          
-          <Stack.Screen name="Welcome back" component={DrawerMenu} options={{ title:"Home", headerShown:false}}/>
+          <Stack.Screen name="Welcome back" component={LoadingHomes} options={{ title:"Home", headerShown:false}}/>
           </>
         ) : (
         <>
-        <Stack.Screen name="Welcome" component={Login} options={{headerShown: false}}/>
+        <Stack.Screen name="Login" component={Login} options={{headerShown: false}}/>
         <Stack.Screen name="signup" component={Signup} options={{ title:"SignUp", headerShown: true}}/>
         <Stack.Screen name="loading" component={LoadingHomes} options={{ title:"Home", headerShown: false}}/>
         </>

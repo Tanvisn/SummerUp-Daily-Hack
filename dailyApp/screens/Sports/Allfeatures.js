@@ -1,180 +1,139 @@
-import 'react-native-gesture-handler';
-import React from 'react';
-import { StyleSheet, Text, View, TextInput, ScrollView, TouchableOpacity } from 'react-native';
+import  React, { Component } from 'react';
+import { Text, View, StyleSheet, TouchableOpacity , Image, Button} from 'react-native';
 import Constants from 'expo-constants';
-import Item from './NewListItem';
-
+import { Card, CardItem } from 'react-native-elements';
+import { Col, Row, Grid } from "react-native-easy-grid";
+import DialogInput from 'react-native-dialog-input';
 export default class Allfeatures extends React.Component {
 
-  constructor(props){
-    super(props);
-    this.state = {
-      itemArray: [],
-      itemText: '',
-      inputText: '',
-    }
-    this.saveList=this.saveList.bind(this);
+ constructor(props){
+  super(props);
+  this.state = {
+    isDialogVisible: false,
+  }
+}
+
+showDialog(isShow){
+    this.setState({isDialogVisible: isShow});
   }
 
-    saveList(){
-      //go to backend with itemArray
-      this.props.navigation.navigate('');
-    }
-  
 
-  render() {
+render() {
+  return (
+    <View style={styles.container}>
+    
+    <Text style={styles.paragraph}>
 
-    var items = this.state.itemArray.map((val,key) => {
-        return <Item key={key} keyval={key} val={val}
-        deleteMethod={ ()=> this.deleteItem(key) } />
-      });
-
-
-    return (
-
-      <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerText}> Make A To-Do List For Your Workout </Text>
-      </View>
-
-      <ScrollView style={styles.scrollContainer}>
-
-        {items}
-
-        </ScrollView>
-
-        <View style={styles.footerInput}>
-        <TextInput style={styles.textInput}
-        onChangeText={(itemText) => this.setState({itemText})}
-        value={this.state.itemText}
-        placeholder='> Type here to add an activity'
-        placeholderTextColor='white'
-        underlineColorAndroid={'transparent'} />
-
-        </View>
-
-        <TouchableOpacity onPress={this.addItem.bind(this)} style={styles.addButton}>
-        <Text style={styles.addButtonText}>+</Text>
-        </TouchableOpacity>
-
-     
+    </Text>
     <View style={styles.footer}>
-    
-    <TouchableOpacity style={styles.navButton}><Text style={styles.navButtonTextSpecial}>My Plan</Text></TouchableOpacity>
-    <TouchableOpacity style={styles.navButton} onPress={() => this.props.navigation.navigate('StopWatch')}><Text style={styles.navButtonText}>Stop Watch</Text></TouchableOpacity>    
-    <TouchableOpacity style={styles.navButton} onPress={() => this.props.navigation.navigate('Timer')}><Text style={styles.navButtonText}>Timer</Text></TouchableOpacity>
-    <TouchableOpacity style={styles.navButton} onPress={() => this.props.navigation.navigate('Fitness')}><Text style={styles.navButtonText}>Fitness</Text></TouchableOpacity>
-    
-    </View>
+    <Grid>
+    <Row>
 
-    
+    <Col style={{ borderColor: 'rgb(29, 53, 87)', borderWidth: 2, marginBottom: 10, marginRight: 10, justifyContent: 'center', borderRadius: 120, backgroundColor: '#fff',}}>
+    <TouchableOpacity onPress={() => this.props.navigation.navigate('AllListSports')}>
+    <View style={{ alignItems: 'center', }}>
+    <Image
+    source={require('../../assets/list.png')}
 
+    style={{
+      width: 110,
+      height: 110,
+
+    }}
+    />
+    <Text style={styles.nameText}>All Lists</Text>
     </View>
+    </TouchableOpacity>
+    </Col>
+
+    <Col style={{ borderColor: 'rgb(29, 53, 87)', borderWidth: 2, marginBottom: 10, justifyContent: 'center', borderRadius: 120, backgroundColor: '#fff',}}>
+    <TouchableOpacity onPress={() => this.props.navigation.navigate('StopWatch')}>
+    <View style={{ alignItems: 'center', justifyContent: 'center',}}>
+    <Image
+    source={require('../../assets/stop-watch.png')}
+
+    style={{
+      width: 110,
+      height: 110,
+
+    }}
+    />
+    <Text style={styles.nameText}>Stop Watch</Text>
+    </View>
+    </TouchableOpacity>
+    </Col>
+    </Row>
+    <Row>
+    <Col style={{ borderColor: 'rgb(29, 53, 87)', borderWidth: 2, marginRight: 10, justifyContent: 'center', borderRadius: 120, backgroundColor: '#fff',}}>
+    <TouchableOpacity onPress={() => this.props.navigation.navigate('Timer')}>
+    <View style={{ alignItems: 'center', justifyContent: 'center',}}>
+    <Image
+    source={require('../../assets/timer.png')}
+
+    style={{
+      width: 110,
+      height: 110,
+
+    }}
+    />
+    <Text style={styles.nameText}>Timer</Text>
+    </View>
+    </TouchableOpacity>
+    </Col>
+    <Col style={{ borderColor: 'rgb(29, 53, 87)', borderWidth: 2, justifyContent: 'center', borderRadius: 120, backgroundColor: '#fff',}}>
+    <TouchableOpacity onPress={() => this.props.navigation.navigate('Diet')}>
+    <View style={{ alignItems: 'center', justifyContent: 'center', left: 5, }}>
+    <Image
+    source={require('../../assets/food.png')}
+
+    style={{
+      width: 110,
+      height: 110,
+        //left: 15,
+      }}
+      />
+      <Text style={styles.nameText}>Health</Text>
+      </View>
+      </TouchableOpacity>
+      </Col>
+      </Row>
+      </Grid>
+      </View>
+      </View>
       );
-  }
-
-  addItem() {
-      if (this.state.itemText) {
-        this.state.itemArray.push({
-          item: this.state.itemText
-        });
-
-        this.setState({ itemArray: this.state.itemArray })
-        this.setState({ itemText: '' });
-      }
-    }
-
-    deleteItem(key) {
-      this.state.itemArray.splice(key,1);
-      this.setState({ itemArray: this.state.itemArray })
-    }
-
+}
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'center',
+    paddingTop: Constants.statusBarHeight,
     backgroundColor: 'rgba(202, 240, 248, 0.3)',
-  },
+    padding: 8,
+      //backgroundColor: 'rgba(202, 240, 248, 0.3)',
+    },
+    paragraph: {
+      margin: 24,
+      fontSize: 18,
+      fontWeight: 'bold',
+      textAlign: 'center',
+    },
 
-  footerInput: {
-    bottom: 50,
+    nameText: {
+      fontSize: 20,
+      fontWeight: '700',
+    },
 
-  },
+    footer: {
+      position: 'absolute',
+      bottom: 200,
+      left: 10,
+      right: 10,
+      zIndex: 10,
+      top: 150,
+      flexDirection: 'row',
+      justifyContent: 'center',
 
-  navButton: {
-    margin: 10,
-    marginBottom: 15,
-  },
-
-  navButtonText: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: 'rgba(29, 53, 87,0.4)',
-  },
-  navButtonTextSpecial: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: 'rgb(29, 53, 87)',
-  },
-
-  header: {
-    backgroundColor: '#1d3557',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderBottomWidth: 0,
-    borderBottomColor: '#ddd',
-  },
-
-  headerText: {
-    color: 'white',
-    fontSize: 18,
-    padding: 26,
-  },
-
-  scrollContainer: {
-    flex: 1,
-    marginBottom: 100,
-  },
-
-  footer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    zIndex: 10,
-    flexDirection: 'row',
-    justifyContent: 'center',
-
-
-  },
-
-  textInput: {
-    alignSelf: 'stretch',
-    color: '#fff',
-    padding: 20,
-    backgroundColor: 'rgb(29, 53, 87)',
-    borderTopWidth: 2,
-    borderTopColor: '#ededed',
-  },
-
-  addButton: {
-    position: 'absolute',
-    zIndex: 11,
-    right: 20,
-    bottom: 60,
-    backgroundColor: '#fff',
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    alignItems: 'center',
-    justifyContent: 'center',
-    elevation: 8,
-  },
-
-  addButtonText: {
-    color: 'rgb(29, 53, 87)',
-    fontSize: 24,
-  }
-});
-
+    },
+  });

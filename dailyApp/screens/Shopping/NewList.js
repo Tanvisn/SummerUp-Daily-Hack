@@ -3,49 +3,123 @@ import React from 'react';
 import { StyleSheet, Text, View, TextInput, ScrollView, TouchableOpacity, CheckBox } from 'react-native';
 import Constants from 'expo-constants';
 import Item from './NewListItem';
+import { url } from './../../components/url';
 export default class NewList extends React.Component {
 
   constructor(props){
     super(props);
     this.state = {
-      itemArray: [],
+      itemArray: [],//key,item,checked
       itemText: '',
       inputText: '',
+      edit:true,
     }
     this.saveList=this.saveList.bind(this);
+    this.toggleEdit=this.toggleEdit.bind(this);
+    this.toggleCheckItem=this.toggleCheckItem.bind(this);
   }
 
     saveList(){
       //go to backend with itemArray
-      this.props.navigation.navigate('Shopping');
+      console.log(this.state.itemArray);
+      fetch(url+'/saveShopList',{
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        edit:(!(this.props.route.params.edit))+1,
+        key:this.props.route.params.key,
+        name:this.props.route.params.name,
+        title:this.props.route.params.title,
+        items:this.state.itemArray
+      })
+    })
+
+    //recieve entry added confirmation from backend
+    .then((response) => (response.json()))
+    
+    .then((res) => {
+      console.log("response");
+      console.warn(res);
+      //Alert.alert(res.message);
+      //if entry added
+      if(res.success === true){
+        alert(res.message);
+        this.props.navigation.navigate('Shopping');
+    //    this.toggleEdit();
+    //    this.props.route.params.beforeGoBack();
+        
+      }
+      else {
+        alert(res.message);
+        console.warn("error");
+      }
+    })
+    
+    .catch(err => {
+      console.log(err);
+    });
+    }
+
+    toggleEdit(){
+    //  console.log(this.state);
+      this.setState({edit:!(this.state.edit)})
+    }
+
+    createItems(){
+      console.log(this.state.itemArray);
+      return(this.state.itemArray.map((val,key) => {
+        console.log("items");
+        console.log(val);
+        console.log("items");
+        return <Item key={key} keyval={key} val={val}
+        deleteMethod={ ()=> this.deleteItem(key) } toggleCheck={()=>this.toggleCheckItem(val.key)}/>
+      }))
+    }
+
+    componentDidMount(){
+      if(this.props.route.params.edit){
+        this.setState({edit: true});
+      }
+      else{
+        this.setState({
+          itemArray:this.props.route.params.items,
+        });
+     
+      }
     }
   
     render() {
-      var items = this.state.itemArray.map((val,key) => {
-        return <Item key={key} keyval={key} val={val}
-        deleteMethod={ ()=> this.deleteItem(key) } />
-      });
+      
 
       return (
         <View style={styles.container}>
         
         <View style={styles.header}>
         <Text style={styles.headerText}>{this.props.route.params.title}</Text>
-        <TouchableOpacity 
+        {this.state.edit?(<TouchableOpacity 
          style={styles.saveButton}
          onPress={this.saveList}>
           <Text style={styles.saveButtonText}>Save</Text>
+        </TouchableOpacity>):
+        (<TouchableOpacity 
+         style={styles.saveButton}
+         onPress={this.toggleEdit}>
+          <Text style={styles.saveButtonText}>Add</Text>
         </TouchableOpacity>
+        )}
         </View>
 
 
         <ScrollView style={styles.scrollContainer}>
 
-        {items}
+        {this.createItems()}
 
         </ScrollView>
 
-        <View style={styles.footer}>
+        {this.state.edit && <View style={styles.footer}>
         <TextInput style={styles.textInput}
         onChangeText={(itemText) => this.setState({itemText})}
         value={this.state.itemText}
@@ -53,11 +127,11 @@ export default class NewList extends React.Component {
         placeholderTextColor='white'
         underlineColorAndroid={'transparent'} />
 
-        </View>
+        </View>}
 
-        <TouchableOpacity onPress={this.addItem.bind(this)} style={styles.addButton}>
+        {this.state.edit && <TouchableOpacity onPress={this.addItem.bind(this)} style={styles.addButton}>
         <Text style={styles.addButtonText}>+</Text>
-        </TouchableOpacity>
+        </TouchableOpacity>}
 
         </View>
         );
@@ -66,17 +140,31 @@ export default class NewList extends React.Component {
     addItem() {
       if (this.state.itemText) {
         this.state.itemArray.push({
-          item: this.state.itemText
+          item: this.state.itemText,
+          checked: false,
+          key: Date.now(),
         });
-
-        this.setState({ itemArray: this.state.itemArray })
+        console.log("adding");
+        this.setState({ itemArray: this.state.itemArray });
         this.setState({ itemText: '' });
       }
     }
 
     deleteItem(key) {
       this.state.itemArray.splice(key,1);
-      this.setState({ itemArray: this.state.itemArray })
+      console.log("delete item");
+      this.setState({ itemArray: this.state.itemArray });
+    }
+
+    toggleCheckItem(key) {
+      console.log(itt+"iiihi");
+   //   if(this.state.itemArray!==[]){
+      var itt=this.state.itemArray.filter(it => it.key===key);
+      itt[0].checked = !itt[0].checked;
+      var item=this.state.itemArray.map(it => it.key===key?itt[0]:it);
+      console.warn(item);
+      this.setState({ itemArray: item });
+    
     }
 
 }

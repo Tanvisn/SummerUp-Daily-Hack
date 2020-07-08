@@ -1,38 +1,103 @@
 import  React, { Component } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity , Image, Button} from 'react-native';
 import Constants from 'expo-constants';
+import { Card, CardItem } from 'react-native-elements';
+import { Col, Row, Grid } from "react-native-easy-grid";
+import DialogInput from 'react-native-dialog-input';
+export default class Diet extends React.Component {
 
-export default class Fitness extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-      <Text style={styles.paragraph}>
-      Diet Page
-      </Text>
+ constructor(props){
+  super(props);
+  this.state = {
+    isDialogVisible: false,
+  }
+}
 
-      <View style={styles.footer}>
-
-      <TouchableOpacity style={styles.navButton} onPress={() => this.props.navigation.navigate('Sports')}><Text style={styles.navButtonText}>My Plan</Text></TouchableOpacity>
-      <TouchableOpacity style={styles.navButton} onPress={() => this.props.navigation.navigate('StopWatch')}><Text style={styles.navButtonText}>Stop Watch</Text></TouchableOpacity>    
-      <TouchableOpacity style={styles.navButton} onPress={() => this.props.navigation.navigate('Timer')}><Text style={styles.navButtonText}>Timer</Text></TouchableOpacity>
-      <TouchableOpacity style={styles.navButton}><Text style={styles.navButtonTextSpecial}>Fitness</Text></TouchableOpacity>
-
-      </View>
-
-      
-      </View>
-      );
-    }
+showDialog(isShow){
+    this.setState({isDialogVisible: isShow});
   }
 
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: 'center',
-      paddingTop: Constants.statusBarHeight,
-      backgroundColor: 'white',
-      padding: 8,
-      backgroundColor: 'rgba(202, 240, 248, 0.3)',
+
+render() {
+  return (
+    <View style={styles.container}>
+    
+    <View style={styles.footer}>
+    <Grid >
+    <Col style={{ alignItems: 'center', justifyContent: 'center',}}>
+
+    <Row style={{ borderColor: 'rgb(29, 53, 87)', borderWidth: 2, marginBottom: 10, justifyContent: 'center', backgroundColor: '#fff',
+    width: 300, height: 230,}}>
+    <TouchableOpacity onPress={() => this.props.navigation.navigate('Food')}>
+    <View style={{ alignItems: 'center', justifyContent: 'center', top: 30, left: 5,}}>
+    <Image
+    source={require('../../assets/diet2.png')}
+
+    style={{
+      width: 110,
+      height: 110,
+      marginBottom: 10,
+    }}
+    />
+    <Text style={styles.nameText}>My Palate</Text>
+    <Text style={styles.subtext}>Make it more heaithy...</Text>
+    </View>
+    </TouchableOpacity>
+    </Row>
+
+    <Row style={{ borderColor: 'rgb(29, 53, 87)', borderWidth: 2, marginBottom: 10, justifyContent: 'center', backgroundColor: '#fff',
+    width: 300, height: 230,}}>
+    <TouchableOpacity onPress={() => this.props.navigation.navigate('Water')}>
+    <View style={{ alignItems: 'center', justifyContent: 'center', top: 20, }}>
+    <Image
+    source={require('../../assets/water.png')}
+
+    style={{
+      width: 110,
+      height: 110,
+      marginBottom: 10,
+    }}
+    />
+    <Text style={styles.nameText}>Keep Yourself Hydrated</Text>
+    <Text style={styles.subtext}>Tips to maintain water balance</Text>
+    </View>
+    </TouchableOpacity>
+    </Row>
+
+    <Row style={{ borderColor: 'rgb(29, 53, 87)', borderWidth: 2, justifyContent: 'center', backgroundColor: '#fff',
+    width: 300, height: 230,}}>
+    <TouchableOpacity onPress={() => this.props.navigation.navigate('Sleep')}>
+    <View style={{ alignItems: 'center', justifyContent: 'center', top: 30,}}>
+    <Image
+    source={require('../../assets/sleep.png')}
+
+    style={{
+      width: 110,
+      height: 110,
+
+    }}
+    />
+    <Text style={styles.nameText}>Sleep well</Text>
+    <Text style={styles.subtext}>How to get better sleep?</Text>
+    </View>
+    </TouchableOpacity>
+    </Row>
+      </Col>
+      </Grid>
+      </View>
+      </View>
+      );
+}
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    paddingTop: Constants.statusBarHeight,
+    backgroundColor: 'rgba(202, 240, 248, 0.3)',
+    padding: 8,
+      //backgroundColor: 'rgba(202, 240, 248, 0.3)',
     },
     paragraph: {
       margin: 24,
@@ -41,30 +106,27 @@ export default class Fitness extends React.Component {
       textAlign: 'center',
     },
 
-    navButton: {
-      margin: 10,
-      marginBottom: 15,
-    },
-
-    navButtonText: {
-      fontSize: 18,
-      fontWeight: "bold",
-      color: 'rgba(29, 53, 87,0.4)',
-    },
-    navButtonTextSpecial: {
-      fontSize: 18,
-      fontWeight: "bold",
-      color: 'rgb(29, 53, 87)',
+    nameText: {
+      fontSize: 20,
+      fontWeight: '700',
     },
 
     footer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    zIndex: 10,
-    flexDirection: 'row',
-    justifyContent: 'center',
+      position: 'absolute',
+      bottom: 100,
+      left: 10,
+      right: 10,
+      zIndex: 10,
+      top: 130,
+      flexDirection: 'row',
+      justifyContent: 'center',
 
-  },
+    },
+
+     subtext: {
+      fontSize: 18,
+      fontWeight: '200',
+    },
+
+
   });

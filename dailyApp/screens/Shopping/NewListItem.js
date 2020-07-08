@@ -1,14 +1,25 @@
 import React from 'react';
-import { StyleSheet, Text, View,TouchableOpacity, CheckBox } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, CheckBox } from 'react-native';
 import Constants from 'expo-constants';
 export default class Item extends React.Component {
 
 	constructor(props){
 		super(props);
 		this.state = {
-			checked: false,
+			checked: false
 		}
+		this.handleCheck=this.handleCheck.bind(this);
 	}
+
+	componentDidMount(){
+		this.setState({checked:this.props.val.checked});
+	}
+
+	handleCheck(c){
+	//	this.setState({checked:!c});
+		this.props.toggleCheck;
+	}
+
 	render() {
 	return (
 		<View key={this.props.keyval} style={styles.item}>
@@ -18,7 +29,7 @@ export default class Item extends React.Component {
 		<CheckBox
 			value={this.state.checked}
 			style={styles.listCheckbox}
-			onValueChange={() => this.setState({ checked: !this.state.checked })}
+			onValueChange={this.props.toggleCheck}
 			/>
 		<TouchableOpacity onPress={this.props.deleteMethod} style={styles.itemDelete}>
 		<Text style={styles.itemDeleteText}>D</Text>

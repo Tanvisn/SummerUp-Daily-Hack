@@ -2,7 +2,8 @@ import 'react-native-gesture-handler';
 import React from "react";
 import { SafeAreaView, ScrollView, KeyboardAvoidingView, StyleSheet,Text, View, TouchableOpacity, Picker, TextInput, Platform } from "react-native";
 import AsyncStorage from '@react-native-community/async-storage';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { url } from './../components/url';
 
 export default class Signup extends React.Component{
   constructor(props){
@@ -12,16 +13,20 @@ export default class Signup extends React.Component{
       Lname:"",
       name: "",
       pass: "",
-      age: "",
+      email: "",
+      age: 0,
     };
     this.handleSignup = this.handleSignup.bind(this);
     this.storeInAsync = this.storeInAsync.bind(this);
   }
 
-  storeInAsync = async() =>{
+  storeInAsync = async(ageGrp) =>{
     await AsyncStorage.setItem('auth_data', JSON.stringify({
-      age: this.state.age,
-      name: this.state.name
+      age: ageGrp,
+      name: this.state.name,
+      fname: this.state.Fname,
+      lname: this.state.Lname,
+      email: this.state.email,
     }));
   }
 
@@ -46,27 +51,28 @@ export default class Signup extends React.Component{
       return;
     }
     
-    if(Platform.OS === 'ios' || Platform.OS === 'android'){
+  /*  if(Platform.OS === 'ios' || Platform.OS === 'android'){
       this.storeInAsync();
      //   alert(res.message);
       this.props.navigation.reset({
         routes: [{ name: 'loading',params: {age: ageGrp, name:this.state.name}}]    
       });
     }
-    else{
+    else{*/
     //send data to backend
-    fetch('http://localhost:9000/signup',{
+    fetch(url+'/signup',{
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        name:this.state.name,
-        pass:this.state.pass,
+        userName:this.state.name,
+        password:this.state.pass,
+        email:this.state.email,
         age:ageGrp,
-        Fname:this.state.Fname,
-        Lname:this.state.Lname
+        fName:this.state.Fname,
+        lName:this.state.Lname
       })
     })
 
@@ -79,8 +85,8 @@ export default class Signup extends React.Component{
       //Alert.alert(res.message);
       //if signup successful
       if(res.success === true){
-        this.state.age=res.age;
-        this.storeInAsync();
+        
+        this.storeInAsync(ageGrp);
         alert(res.message);
         this.props.navigation.reset({
           routes: [{ name: 'loading',params: {age: ageGrp, name:this.state.name}}]
@@ -96,7 +102,7 @@ export default class Signup extends React.Component{
     .catch(err => {
       console.log(err);
     });
-    }
+//    }
   //  this.props.navigation.navigate('loading', {age: this.state.age});
   }
 
@@ -125,14 +131,14 @@ export default class Signup extends React.Component{
         autoCapitalize="none" 
         onChange = {(e) => this.setState({ name: e.nativeEvent.text})}/>
         <Text style={styles.text}>Password</Text>
-        <TextInput style={styles.input} //placeholder="Username" 
+        <TextInput style={styles.input} 
         placeholderTextColor='black'
         underlineColorAndroid={'transparent'} 
         autoCapitalize="none"
         secureTextEntry={true}
         onChange = {(e) => this.setState({ pass: e.nativeEvent.text})}/>
         <Text style={styles.text}>Email-id</Text>
-        <TextInput style={styles.input} //placeholder="Username" 
+        <TextInput style={styles.input}
         placeholderTextColor='black'
         underlineColorAndroid={'transparent'} 
         autoCapitalize="none"
@@ -143,10 +149,10 @@ export default class Signup extends React.Component{
         selectedValue={this.state.age}
         onValueChange={(itemValue, itemIndex) => this.setState({ age: itemValue })}>
         <Picker.Item label="Select your age group..." value=""/>
-        <Picker.Item label="Kids" value="kids" />
-        <Picker.Item label="Teens" value="teens" />
-        <Picker.Item label="Adults" value="adults" />
-        <Picker.Item label="Elderly" value="elderly" />
+        <Picker.Item label="Below 13" value="kids" />
+        <Picker.Item label="13-20" value="teens" />
+        <Picker.Item label="21-60" value="adults" />
+        <Picker.Item label="Above 60" value="elderly" />
         </Picker>
         </View>
         

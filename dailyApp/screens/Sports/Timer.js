@@ -136,7 +136,7 @@ export default class StopWatch extends Component {
       </View>
 
 
-      <View style={styles.footer}>
+     {/* <View style={styles.footer}>
 
       <TouchableOpacity style={styles.navButton} onPress={() => this.props.navigation.navigate('Sports')}><Text style={styles.navButtonText}>My Plan</Text></TouchableOpacity>
       <TouchableOpacity style={styles.navButton} onPress={() => this.props.navigation.navigate('StopWatch')}><Text style={styles.navButtonText}>Stop Watch</Text></TouchableOpacity>    
@@ -144,7 +144,7 @@ export default class StopWatch extends Component {
       <TouchableOpacity style={styles.navButton} onPress={() => this.props.navigation.navigate('Fitness')}><Text style={styles.navButtonText}>Fitness</Text></TouchableOpacity>
 
       </View>
-
+*/}
       </View>
       );
   }

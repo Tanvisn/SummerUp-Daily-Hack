@@ -15,6 +15,7 @@ import { StyleSheet,
   Platform } from 'react-native';
   import Constants from 'expo-constants';
   import moment from "moment";
+  import { url } from './../../components/url';
 
 export default class NewEntry extends React.Component{
   constructor(props){
@@ -41,6 +42,7 @@ export default class NewEntry extends React.Component{
 
   handleConfirm(date) {
     this.hideDatePicker();
+  //  console.warn(moment('2020-06-22').format('Do MMM YYYY'));
     this.setState({ date:moment(date).format('Do MMMM YYYY')});
   };
 
@@ -63,21 +65,24 @@ export default class NewEntry extends React.Component{
     console.log(this.props.route);
     console.log(this.state.title);
 
-    if(Platform.OS === 'ios' || Platform.OS === 'android'){
+/*    if(Platform.OS === 'ios' || Platform.OS === 'android'){
       this.edit();
       this.props.route.params.beforeGoBack();
+      if(this.props.route.params.edit){
+        this.props.navigation.goBack();
+      }
     }
     else{
-    //send to backend
+*/    //send to backend
     
-    fetch('http://localhost:9000/saveEntry',{
+    fetch(url+'/saveEntry',{
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        edit:!(this.props.route.params.edit),
+        edit:(!(this.props.route.params.edit))+1,
         key:this.state.key,
         name:this.props.route.params.name,
         date:this.state.date,
@@ -97,18 +102,21 @@ export default class NewEntry extends React.Component{
       if(res.success === true){
         alert(res.message);
         this.edit();
-        this.props.route.params.beforeGoBack();
+    //    this.props.route.params.beforeGoBack();
+        if(this.props.route.params.edit){
+          this.props.navigation.goBack();
+        }
       }
       else {
         alert(res.message);
-        console.warn("user already exists or error");
+        console.warn("error");
       }
     })
     
     .catch(err => {
       console.log(err);
     });
-    }
+  //  }
     //this.props.navigation.navigate('Diary',{key: this.state.key, date:this.state.date,title:this.state.title});
     
   }
@@ -125,7 +133,7 @@ export default class NewEntry extends React.Component{
     });
     }
     else{
-      this.setState({key: this.props.route.params.key});
+      this.setState({key: this.props.route.params.key, date:this.props.route.params.date});
     }
   }
 

@@ -3,29 +3,39 @@ import { StyleSheet, Text, View, TextInput, ScrollView, TouchableOpacity, Platfo
 import Constants from 'expo-constants';
 import Entry from './Entry';
 import moment from "moment";
-
-
+const { manifest } = Constants;
+import { Entypo } from '@expo/vector-icons';
+import MyCalendar from './Calendar1';
+import { url } from './../../components/url';
 
 export default class AllEntries extends React.Component {
 
   constructor(props){
     super(props);
     this.state = {
-      entryArray: [{key:12345679, date:"22nd June 2020", title:"check", text:"this is some text"}],
+      entryArray: [],
       entryText: '',
+      viewCal:false,
     }
     this.reloadOnBack=this.reloadOnBack.bind(this);
     this.fetchEntries=this.fetchEntries.bind(this);
     this.createEntries=this.createEntries.bind(this);
+    this._unsubscribeSiFocus = this.props.navigation.addListener('focus', e => {
+        //console.warn('focus diary');
+        this.fetchEntries();
+    });
+    this._unsubscribeSiBlur = this.props.navigation.addListener('blur', e => {
+        //console.warn('blur diary');
+    });
   }
 
   fetchEntries(){
-
-  if(Platform.OS === 'ios' || Platform.OS === 'android'){
-    return [{key:12345679, date:"22nd June 2020", title:"check", text:"this is some text"}];
-  }
-  else{
-  fetch('http://localhost:9000/getAllEntries',{
+console.log("fethcing");
+ // if(Platform.OS === 'ios' || Platform.OS === 'android'){
+  //  return [{key:12345679, date:"22nd June 2020", title:"check", text:"this is some text"}];
+ // }
+  //else{
+  fetch(url+'/getAllEntries',{
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -41,8 +51,13 @@ export default class AllEntries extends React.Component {
     
     .then((res) => {
       console.log("response");
-      console.warn(res.content);
-      return res.content;
+      console.warn(res);
+      if(res.success){
+      this.setState({entryArray:res.content});
+      }
+      else{
+        alert("Couldn't fetch data. Please try again.");
+      }
       //Alert.alert(res.message);
       
     })
@@ -50,20 +65,27 @@ export default class AllEntries extends React.Component {
     .catch(err => {
       console.log(err);
     });
-  }
+  //}
 }
   componentDidMount(){
-  if(Platform.OS === 'ios' || Platform.OS === 'android'){}
-  else{
-    //this.setState({entryArray:this.fetchEntries()});
+//  if(Platform.OS === 'ios' || Platform.OS === 'android'){}
+//  else{
+    this.focusListener = this.props.navigation.addListener('focus', ()=>{
+      this.fetchEntries();
+    });
     console.log(this.state.entryArray);
-  }
+  //}
     console.log("diary mount");
   }
 
+
+  componentWillUnmount(){
+    this.props.navigation.removeListener('focus', this.fetchEntries);
+  }
+
   reloadOnBack(){
-    var entries=fetchEntries();
-    //this.setState({entryArray: entries});
+    this.fetchEntries();
+  //  this.setState({entryArray: entries});
   }
 
   createEntries(){
@@ -107,23 +129,40 @@ export default class AllEntries extends React.Component {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>- YOUR DIARY ENTRIES -</Text>
+        <TouchableOpacity style={{
+          position:'absolute',
+          paddingBottom: 10,
+          right:20
+        }}
+        onPress={() => this.setState({viewCal: !this.state.viewCal})}> 
+        {this.state.viewCal?
+        <Entypo name="list" size={24} color="white" />:
+        <Entypo name="calendar" size={24} color="white" />
+        }
+        </TouchableOpacity>
       </View>
 
+      {this.state.viewCal?
+        < MyCalendar entryArray={this.state.entryArray} navigation={this.props.navigation} route={this.props.route}/>:
+        (
       <ScrollView style={styles.scrollContainer}>
       {console.log("hihi")}
       {this.createEntries()}
 
       </ScrollView>
+      )
+      }
 
       <View style={styles.footer}>
       
       </View>
-
+      { !this.state.viewCal &&
       <TouchableOpacity 
       style={styles.addButton} 
-      onPress={() => this.props.navigation.navigate('NewEntry', {edit:true, key:Date.now(), beforeGoBack: ()=>{this.reloadOnBack()}})}>
+      onPress={() => this.props.navigation.navigate('NewEntry', {edit:true, key:Date.now(), name:this.props.route.params.name})}>
         <Text style={styles.addButtonText}>+</Text>
       </TouchableOpacity>
+      }
 
     </View>
     );
@@ -133,9 +172,54 @@ export default class AllEntries extends React.Component {
 
   deleteEntry(key) {
     console.log("del");
-    var itt=this.state.entryArray.filter(it => it.key!==key);
-    console.log(itt);
-    this.setState({ entryArray: itt })
+    
+  /*  if(Platform.OS === 'ios' || Platform.OS === 'android'){
+      var itt=this.state.entryArray.filter(it => it.key!==key);
+      console.log(itt);
+      this.setState({ entryArray: itt });
+    }
+
+    else{
+*/    //send to backend
+    
+    fetch(url+'/saveEntry',{
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        edit:3,
+        key:key,
+        name:this.props.route.params.name
+      })
+    })
+
+    //recieve entry added confirmation from backend
+    .then((response) => (response.json()))
+    
+    .then((res) => {
+      console.log("response");
+      console.warn(res);
+      //Alert.alert(res.message);
+      //if entry added
+      if(res.success === true){
+    //    alert(res.message);
+    //    this.setState({entryArray:res.content});
+        var entry = this.state.entryArray.filter(it => it.key!==key);
+        this.setState({entryArray:entry});
+        
+      }
+      else {
+        alert(res.message);
+        console.warn("error");
+      }
+    })
+    
+    .catch(err => {
+      console.log(err);
+    });
+  //  }
   }
 
   viewEntry(key){
@@ -147,7 +231,7 @@ export default class AllEntries extends React.Component {
     console.log(itt);
     //var itt = JSON.parse(ittt);
     console.log(itt[0]);
-    this.props.navigation.navigate('NewEntry', {edit:false, key:12345679, date:itt[0].date, title:itt[0].title, text:itt[0].text})
+    this.props.navigation.navigate('NewEntry', {edit:false, key:key, date:itt[0].date, title:itt[0].title, text:itt[0].text, name:this.props.route.params.name})
   }
 }
 
@@ -172,7 +256,7 @@ const styles = StyleSheet.create({
 
   scrollContainer: {
     flex: 1,
-    marginBottom: 100,
+    marginBottom: 10,
   },
 
   footer: {
