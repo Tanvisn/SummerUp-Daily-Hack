@@ -15,14 +15,24 @@ const shoppingSchema = mongoose.Schema({
     content : Object
 });
 
+const transSchema = mongoose.Schema({
+        _id : String,
+        key : String,
+        pieKey : String,
+        type : String,
+        cost : Number,
+        purpose : String,
+        description : String,
+        time : String,
+        method : String
+});
+
 const expenseSchema = mongoose.Schema({
     _id : String,
-    edate : String,
-    time : String,
-    type : String,
-    cost : Number,
-    purpose : String,
-    method : String
+    date : String,
+    month : String,
+    contents : [transSchema]
+    
 });
 
 const listSchema = mongoose.Schema({

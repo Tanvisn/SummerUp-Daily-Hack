@@ -10,7 +10,7 @@ const {mongoUrl} = require("./keys");
 const app = express();
 
 mongoose.set('useCreateIndex', true);
-mongoose.connect(mongoUrl,  { useUnifiedTopology: false,  useNewUrlParser: true } );
+mongoose.connect(mongoUrl,  { useUnifiedTopology: true,  useNewUrlParser: true } );
 
 require("./models/User");
 const requireToken = require("./middleware/requireTokens");
