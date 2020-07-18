@@ -23,6 +23,7 @@ export default class Profile extends React.Component {
     this.removeFromAsync = this.removeFromAsync.bind(this);
     this.handleSignout = this.handleSignout.bind(this);
     this.changePass = this.changePass.bind(this);
+    this.save = this.save.bind(this);
   }
 
   openModal = () =>{
@@ -96,16 +97,16 @@ export default class Profile extends React.Component {
   }
 
   save(){
-  /*  fetch(url+'/saveProfile',{
-      method: 'POST',
+    fetch(url+'/saveProfile',{
+      method: 'PATCH',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        name:this.state.name,
-        fname:this.state.fname,
-        lname:this.state.lname,
+        userName:this.state.name,
+        fName:this.state.fname,
+        lName:this.state.lname,
         email:this.state.email,
         age:this.state.ages
       })
@@ -133,7 +134,7 @@ export default class Profile extends React.Component {
     
     .catch(err => {
       console.log(err);
-    });*/
+    });
   }
 
   removeFromAsync = async() =>{
@@ -220,8 +221,8 @@ export default class Profile extends React.Component {
       </View>
 
       <View style={{ right: 10, top: 20, alignItems: 'center', }}>
-        <TouchableOpacity style={styles.EditnavButton} onPress={this.save}>
-          <Text style={styles.navButtonTextSpecial}>Save Changes</Text>
+        <TouchableOpacity style={styles.EditnavButton} onPress={this.state.edit?this.save:this.toggleEdit}>
+          <Text style={styles.navButtonTextSpecial}>{this.state.edit?"Save Changes":"Edit Profile"}</Text>
         </TouchableOpacity>
       </View>
 

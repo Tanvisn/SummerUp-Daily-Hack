@@ -143,6 +143,8 @@ export default class NewList extends React.Component {
           item: this.state.itemText,
           checked: false,
           key: Date.now(),
+          cost: 120,
+          quantity: 2
         });
         console.log("adding");
         this.setState({ itemArray: this.state.itemArray });

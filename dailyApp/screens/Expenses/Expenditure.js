@@ -2,6 +2,8 @@ import 'react-native-gesture-handler';
 import React, {useState} from "react";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+
+import { url } from './../../components/url';
 import { AntDesign } from '@expo/vector-icons';
 import { StyleSheet, 
   Text, 
@@ -25,18 +27,24 @@ import { StyleSheet,
         isTimePickerVisible: false,
         key:0,
         date: "",
-        title: "",
         mode: "",
         time: "",
-      };
+        desc: "",
+        edit:true,
+        pur: "",
+        amt: "",
+      }; 
       this.hideDatePicker = this.hideDatePicker.bind(this);
       this.hideTimePicker = this.hideTimePicker.bind(this);
       this.handleTimeConfirm = this.handleTimeConfirm.bind(this);
       this.handleDateConfirm = this.handleDateConfirm.bind(this);
       this.save = this.save.bind(this);
-      this.handleTitleChange = this.handleTitleChange.bind(this);
+      this.edit = this.edit.bind(this);
+      this.handleAmtChange = this.handleAmtChange.bind(this);
+      this.handlePurChange = this.handlePurChange.bind(this);
+      this.handleDescChange = this.handleDescChange.bind(this);
     }
-
+ 
     hideDatePicker(){
       this.setState({ isDatePickerVisible: false});
     };
@@ -47,7 +55,7 @@ import { StyleSheet,
 
     handleDateConfirm(date) {
       this.hideDatePicker();
-      this.setState({ date:moment(date).format('Do MMMM YYYY')});
+      this.setState({ date:moment(date).format('DD-MM-YYYY')});
     };
 
 
@@ -56,15 +64,86 @@ import { StyleSheet,
       this.setState({ time:moment(time).format('HH : mm')});
     };
 
-    handleTitleChange(e){
+    handleAmtChange(e){
       console.log(e.nativeEvent.text);
-      this.setState({ title: e.nativeEvent.text});
+      this.setState({ amt: e.nativeEvent.text});
+    }
+
+    handlePurChange(e){
+      console.log(e.nativeEvent.text);
+      this.setState({ pur: e.nativeEvent.text});
+    }
+
+    handleDescChange(e){
+      console.log(e.nativeEvent.text);
+      this.setState({ desc: e.nativeEvent.text});
+    }
+    edit(){
+    //console.log(this.editMode);
+      this.setState({edit : !(this.state.edit)});
     }
 
     save(){
-      console.log(this.props.route);
-      console.log(this.state.title);
-      this.props.navigation.navigate('Manager',{key: Date.now(), date:this.state.date,title:this.state.title});
+      fetch(url+'/expensesUpdate',{
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        edit: 2,
+        type: 'expenses',
+        key:this.state.key,
+        name:this.props.route.params.name,
+        date:(this.state.date),
+        time:this.state.time,
+        pur:this.state.pur,
+        desc:this.state.desc,
+        cost:this.state.amt,
+      })
+    })
+
+    //recieve entry added confirmation from backend
+    .then((response) => (response.json()))
+    
+    .then((res) => {
+      console.log("response");
+      console.warn(res);
+      //Alert.alert(res.message);
+      //if entry added
+      if(res.success === true){
+        alert(res.message);
+      //  this.edit();  
+        this.props.navigation.navigate('Manager');
+        
+      }
+      else {
+        alert(res.message);
+        console.warn("error");
+      }
+    })
+    
+    .catch(err => {
+      console.log(err);
+    });
+    }
+
+    componentDidMount(){
+      if(!this.props.route.params.edit){
+        console.log(this.props.route.params);
+        this.setState({
+          edit:this.props.route.params.edit,
+          key: this.props.route.params.key,
+          date:this.props.route.params.date,
+          time:this.props.route.params.time,
+          amt:this.props.route.params.amt,
+          pur:this.props.route.params.pur,
+          desc:this.props.route.params.desc,
+        });
+      }
+      else{
+        this.setState({key: this.props.route.params.key});
+      }
     }
 
     render(){
@@ -115,8 +194,12 @@ import { StyleSheet,
           <TextInput style={styles.textinput} placeholder="Amount" 
           placeholderTextColor="black"
           underlineColorAndroid={'transparent'} 
-          onChange = {this.handleTitleChange}
+          onChange = {this.handleAmtChange}
           keyboardType={'numeric'}/>
+          <TextInput style={styles.textinput} placeholder="Purpose" 
+          placeholderTextColor="black"
+          underlineColorAndroid={'transparent'} 
+          onChange = {this.handlePurChange}/>
           <TextInput style={styles.textinputDiary} placeholder="Description (Optional)" 
           placeholderTextColor="black" multiline={true}
           underlineColorAndroid={'transparent'} />
@@ -133,8 +216,8 @@ import { StyleSheet,
           <Picker.Item label="Others" value="Ot" />
           </Picker>
           </View>
-          <TouchableOpacity style={styles.button} onPress={this.save}>
-          <Text style={styles.btntext}>Save</Text>
+          <TouchableOpacity style={styles.button} onPress={this.state.edit?this.save:this.edit}>
+          <Text style={styles.btntext}>{this.state.edit?"Save":"Edit"}</Text>
           </TouchableOpacity>
           </View>
           </View>

@@ -4,11 +4,12 @@ import Constants from 'expo-constants';
 import { Card, CardItem } from 'react-native-elements';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { VictoryPie } from 'victory-native';
+import { url } from './../../components/url';
+import moment from "moment";
 
-
-const graphicColor = ['#388087', '#6fb3b8', '#badfe7']; // Colors
+const graphicColor = ['green', 'red']; // Colors
 const wantedGraphicData = [{ y: 1 }, { y: 7 }, { y: 4 }]; // Data that we want to display
-const defaultGraphicData = [{ y: 0 }, { y: 0 }, { y: 100 }]; // Data used to make the animate prop work
+const defaultGraphicData = [{ y: 0 }, { y: 0 }]; // Data used to make the animate prop work
 
 export default class Manager extends React.Component {
   constructor(props){
@@ -16,12 +17,69 @@ export default class Manager extends React.Component {
     this.state={
       graphicData:defaultGraphicData,
     }
+
+    this.fetchEntries=this.fetchEntries.bind(this);
+    this._unsubscribeSiFocus = this.props.navigation.addListener('focus', e => {
+        //console.warn('focus expenditure manager');
+        this.fetchEntries();
+    });
   }
- 
-  componentDidMount(){
-    this.setState({graphicData:wantedGraphicData});
+ componentDidMount(){
+//  if(Platform.OS === 'ios' || Platform.OS === 'android'){}
+//  else{
+    this.focusListener = this.props.navigation.addListener('focus', ()=>{
+      this.fetchEntries();
+    });
+  }
+  componentWillUnmount(){
+    this.props.navigation.removeListener('focus', this.fetchEntries);
+  }
+
+  fetchEntries(){
+    fetch(url+'/getMonthlyExpenses',{
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name:this.props.route.params.name,
+        
+      })
+    })
+
+    .then((response) => (response.json()))
+    
+    .then((res) => {
+      console.log("response");
+      console.warn(res);
+      //Alert.alert(res.message);
+      if(res.success === true){
+        var d=moment(Date.now()).format('MM-YYYY');
+        var currMonth=res.content.filter(i => i._id.month===d);
+        var inc=currMonth.filter(i=>i._id.type==="income")[0].amt;
+        var exp = currMonth.filter(i=>i._id.type==="expenses")[0].amt;
+        console.log(currMonth);
+        console.log(inc);
+        this.setState({
+          inc,
+          exp,
+          sav:(inc - exp),
+          graphicData:[{ x:"Savings", y:(inc-exp)}, {x:"Expenditure", y:exp}]
+        })
+        
+      }
+      else {
+        alert("Something went wrong. Please try again");
+      }
+    })
+    
+    .catch(err => {
+      console.log(err);
+    });
   }
   render() {
+    console.log(this.props.route.params.name);
     return (
       <View style={styles.container}>
       <View style={{paddingTop:0, paddingBottom:300, paddingLeft:50}}>
@@ -42,7 +100,7 @@ export default class Manager extends React.Component {
       <Row>
       
       <Col style={{ borderColor: 'rgb(29, 53, 87)', borderWidth: 2, marginBottom: 10, marginRight: 10, justifyContent: 'center',}}>
-      <TouchableOpacity onPress={() => this.props.navigation.navigate('Income')}>
+      <TouchableOpacity onPress={() => this.props.navigation.navigate('Income',{name:this.props.route.params.name, edit:1})}>
       <View style={{ alignItems: 'center', }}>
       <Image
       source={require('../../assets/payment-min.png')}
@@ -59,7 +117,7 @@ export default class Manager extends React.Component {
       </Col>
       
       <Col style={{ borderColor: 'rgb(29, 53, 87)', borderWidth: 2, marginBottom: 10, justifyContent: 'center',}}>
-       <TouchableOpacity onPress={() => this.props.navigation.navigate('Expenditure')}>
+       <TouchableOpacity onPress={() => this.props.navigation.navigate('Expenditure',{name:this.props.route.params.name, edit:1})}>
       <View style={{ alignItems: 'center', justifyContent: 'center',}}>
       <Image
       source={require('../../assets/pay-min.png')}

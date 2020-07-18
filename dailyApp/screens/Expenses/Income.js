@@ -17,7 +17,9 @@ import { StyleSheet,
   import Constants from 'expo-constants';
   import moment from "moment";
   import TimePicker from 'react-native-simple-time-picker';
-  export default class NewEntry extends React.Component{
+  import { url } from './../../components/url';
+
+  export default class Income extends React.Component{
     constructor(props){
       super(props);
       this.state={
@@ -28,13 +30,18 @@ import { StyleSheet,
         title: "",
         mode: "",
         time: "",
+        desc: "",
+        edit:true,
+        pur: "",
+        amt: "",
+
       };
       this.hideDatePicker = this.hideDatePicker.bind(this);
       this.hideTimePicker = this.hideTimePicker.bind(this);
       this.handleTimeConfirm = this.handleTimeConfirm.bind(this);
       this.handleDateConfirm = this.handleDateConfirm.bind(this);
       this.save = this.save.bind(this);
-      this.handleTitleChange = this.handleTitleChange.bind(this);
+      this.edit = this.edit.bind(this);
     }
 
     hideDatePicker(){
@@ -47,7 +54,7 @@ import { StyleSheet,
 
     handleDateConfirm(date) {
       this.hideDatePicker();
-      this.setState({ date:moment(date).format('Do MMMM YYYY')});
+      this.setState({ date:moment(date).format('DD-MM-YYYY')});
     };
 
 
@@ -56,15 +63,71 @@ import { StyleSheet,
       this.setState({ time:moment(time).format('HH : mm')});
     };
 
-    handleTitleChange(e){
-      console.log(e.nativeEvent.text);
-      this.setState({ title: e.nativeEvent.text});
+    save(){
+      fetch(url+'/expensesUpdate',{
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        edit: 1,
+        key:this.state.key,
+        name:this.props.route.params.name,
+        date:(this.state.date),
+        time:this.state.time,
+        pur:this.state.pur,
+        desc:this.state.desc,
+        cost:this.state.amt,
+      })
+    })
+
+    //recieve entry added confirmation from backend
+    .then((response) => (response.json()))
+    
+    .then((res) => {
+      console.log("response");
+      console.warn(res);
+      //Alert.alert(res.message);
+      //if entry added
+      if(res.success === true){
+        alert(res.message);
+        this.edit();  
+        this.props.navigation.navigate('Manager');
+        
+      }
+      else {
+        alert(res.message);
+        console.warn("error");
+      }
+    })
+    
+    .catch(err => {
+      console.log(err);
+    });
     }
 
-    save(){
-      console.log(this.props.route);
-      console.log(this.state.title);
-      this.props.navigation.navigate('Manager',{key: Date.now(), date:this.state.date,title:this.state.title});
+    edit(){
+    //console.log(this.editMode);
+      this.setState({edit : !(this.state.edit)});
+    }
+
+    componentDidMount(){
+      if(!this.props.route.params.edit){
+        console.log(this.props.route.params);
+      this.setState({
+        edit:this.props.route.params.edit,
+        key: this.props.route.params.key,
+        date:this.props.route.params.date,
+        time:this.props.route.params.time,
+        amt:this.props.route.params.amt,
+        pur:this.props.route.params.pur,
+        desc:this.props.route.params.desc,
+      });
+      }
+      else{
+        this.setState({key: this.props.route.params.key});
+      }
     }
 
     render(){
@@ -115,11 +178,17 @@ import { StyleSheet,
           <TextInput style={styles.textinput} placeholder="Amount" 
           placeholderTextColor="black"
           underlineColorAndroid={'transparent'} 
-          onChange = {this.handleTitleChange}
+          onChange = {(e)=>this.setState({ amt: e.nativeEvent.text})}
           keyboardType={'numeric'}/>
+          <TextInput style={styles.textinput} placeholder="Purpose (Shopping, Restaurant, Fuel, Medical, etc)" 
+          placeholderTextColor="black"
+          underlineColorAndroid={'transparent'} 
+          onChange = {(e)=>this.setState({ pur: e.nativeEvent.text})}
+          />
           <TextInput style={styles.textinputDiary} placeholder="Description (Optional)" 
           placeholderTextColor="black" multiline={true}
-          underlineColorAndroid={'transparent'} />
+          underlineColorAndroid={'transparent'} 
+          onChange = {(e)=>this.setState({ desc: e.nativeEvent.text})}/>
           <View style={styles.dropdown}>
           <Picker mode='dropdown' 
           style={styles.picker} 
@@ -134,8 +203,8 @@ import { StyleSheet,
           <Picker.Item label="Other" value="Ot" />
           </Picker>
           </View>
-          <TouchableOpacity style={styles.button} onPress={this.save}>
-          <Text style={styles.btntext}>Save</Text>
+          <TouchableOpacity style={styles.button} onPress={this.state.edit?this.save:this.edit}>
+          <Text style={styles.btntext}>{this.state.edit?"Save":"Edit"}</Text>
           </TouchableOpacity>
           </View>
           </View>

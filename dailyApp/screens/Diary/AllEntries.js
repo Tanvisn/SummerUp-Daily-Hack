@@ -24,9 +24,9 @@ export default class AllEntries extends React.Component {
         //console.warn('focus diary');
         this.fetchEntries();
     });
-    this._unsubscribeSiBlur = this.props.navigation.addListener('blur', e => {
+ //   this._unsubscribeSiBlur = this.props.navigation.addListener('blur', e => {
         //console.warn('blur diary');
-    });
+   // });
   }
 
   fetchEntries(){

@@ -39,8 +39,8 @@ render() {
       marginBottom: 10,
     }}
     />
-    <Text style={styles.nameText}>My Palate</Text>
-    <Text style={styles.subtext}>Make it more heaithy...</Text>
+    <Text style={styles.nameText}>My Plate</Text>
+    <Text style={styles.subtext}>Make it more healthy...</Text>
     </View>
     </TouchableOpacity>
     </Row>

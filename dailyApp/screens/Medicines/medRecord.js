@@ -76,13 +76,16 @@ import { StyleSheet,
     save(){
       console.log(this.props.route);
       console.log(this.state.title);
-      this.props.navigation.navigate('Home',{key: Date.now(), date:this.state.date,title:this.state.title});
+      this.props.navigation.navigate('Diary',{key: Date.now(), date:this.state.date,title:this.state.title});
     }
 
     render(){
 
       return (
         <View style={styles.container}>
+
+
+      
 
         <View style={styles.input}>
 
@@ -146,7 +149,7 @@ import { StyleSheet,
         placeholderTextColor="black" multiline={true}
         underlineColorAndroid={'transparent'} />
 
-        <TouchableOpacity style={styles.button} onPress={this.save}>
+        <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('MedHome')}>
         <Text style={styles.btntext}>Set a Reminder</Text>
         </TouchableOpacity>
         </View>
@@ -193,7 +196,7 @@ import { StyleSheet,
 
     },
 
-     textinput: {
+    textinput: {
       color: 'black',
       fontSize: 18,
       alignSelf: 'stretch',
@@ -212,7 +215,7 @@ import { StyleSheet,
     textinputDiary: {
       color: 'black',
       fontSize: 18,
-     backgroundColor: 'rgba(30, 85, 92,0.1)',
+      backgroundColor: 'rgba(30, 85, 92,0.1)',
       alignSelf: 'stretch',
       height: 150,
       marginBottom: 20,
