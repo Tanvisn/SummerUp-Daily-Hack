@@ -21,11 +21,11 @@ export default class AllEntries extends React.Component {
     this.fetchEntries=this.fetchEntries.bind(this);
     this.createEntries=this.createEntries.bind(this);
     this._unsubscribeSiFocus = this.props.navigation.addListener('focus', e => {
-        //console.warn('focus diary');
+        ////console.warn('focus diary');
         this.fetchEntries();
     });
  //   this._unsubscribeSiBlur = this.props.navigation.addListener('blur', e => {
-        //console.warn('blur diary');
+        ////console.warn('blur diary');
    // });
   }
 
@@ -35,7 +35,8 @@ console.log("fethcing");
   //  return [{key:12345679, date:"22nd June 2020", title:"check", text:"this is some text"}];
  // }
   //else{
-  fetch(url+'/getAllEntries',{
+    setTimeout(() => {
+  fetch(url+'/getAllDiaryEntries',{
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -46,12 +47,11 @@ console.log("fethcing");
     })
     })
 
-    //recieve login confirmation and age from backend
     .then((response) => (response.json()))
     
     .then((res) => {
       console.log("response");
-      console.warn(res);
+      //console.warn(res);
       if(res.success){
       this.setState({entryArray:res.content});
       }
@@ -65,6 +65,7 @@ console.log("fethcing");
     .catch(err => {
       console.log(err);
     });
+  },10)
   //}
 }
   componentDidMount(){
@@ -200,7 +201,7 @@ console.log("fethcing");
     
     .then((res) => {
       console.log("response");
-      console.warn(res);
+      //console.warn(res);
       //Alert.alert(res.message);
       //if entry added
       if(res.success === true){
@@ -212,7 +213,7 @@ console.log("fethcing");
       }
       else {
         alert(res.message);
-        console.warn("error");
+        //console.warn("error");
       }
     })
     

@@ -158,7 +158,7 @@ export default class Calculator extends React.Component {
         </View>
         <View style={styles.contOutput}>
           <View style={styles.placeHolderOutput}>
-            <Text style={styles.txtDefault}>{this.state._output}</Text>
+            <Text style={styles.txtDefault}>{this.state._output} </Text>
           </View>
         </View>
         <View style={styles.contButtons}>

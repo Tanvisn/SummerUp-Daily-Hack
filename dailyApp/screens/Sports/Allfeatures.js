@@ -30,7 +30,7 @@ render() {
     <Row>
 
     <Col style={{ borderColor: 'rgb(29, 53, 87)', borderWidth: 2, marginBottom: 10, marginRight: 10, justifyContent: 'center', borderRadius: 120, backgroundColor: '#fff',}}>
-    <TouchableOpacity onPress={() => this.props.navigation.navigate('AllListSports')}>
+    <TouchableOpacity onPress={() => this.props.navigation.navigate('AllListSports',{name:this.props.route.params.name})}>
     <View style={{ alignItems: 'center', }}>
     <Image
     source={require('../../assets/list.png')}
@@ -41,7 +41,7 @@ render() {
 
     }}
     />
-    <Text style={styles.nameText}>All Lists</Text>
+    <Text style={styles.nameText}>All Lists </Text>
     </View>
     </TouchableOpacity>
     </Col>
@@ -58,7 +58,7 @@ render() {
 
     }}
     />
-    <Text style={styles.nameText}>Stop Watch</Text>
+    <Text style={styles.nameText}>Stop Watch  </Text>
     </View>
     </TouchableOpacity>
     </Col>
@@ -76,7 +76,7 @@ render() {
 
     }}
     />
-    <Text style={styles.nameText}>Timer</Text>
+    <Text style={styles.nameText}>Timer </Text>
     </View>
     </TouchableOpacity>
     </Col>
@@ -92,7 +92,7 @@ render() {
         //left: 15,
       }}
       />
-      <Text style={styles.nameText}>Health</Text>
+      <Text style={styles.nameText}>Health </Text>
       </View>
       </TouchableOpacity>
       </Col>

@@ -4,7 +4,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 import { url } from './../../components/url';
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import { StyleSheet, 
   Text, 
   View, 
@@ -14,6 +14,7 @@ import { StyleSheet,
   TouchableWithoutFeedback,
   ImageBackground,
   Image,
+  ScrollView,
   ActivityIndicator,
   Picker } from 'react-native';
   import Constants from 'expo-constants';
@@ -40,6 +41,7 @@ import { StyleSheet,
       this.handleDateConfirm = this.handleDateConfirm.bind(this);
       this.save = this.save.bind(this);
       this.edit = this.edit.bind(this);
+      this.delete = this.delete.bind(this);
       this.handleAmtChange = this.handleAmtChange.bind(this);
       this.handlePurChange = this.handlePurChange.bind(this);
       this.handleDescChange = this.handleDescChange.bind(this);
@@ -100,6 +102,7 @@ import { StyleSheet,
         pur:this.state.pur,
         desc:this.state.desc,
         cost:this.state.amt,
+        mode:this.state.mode,
       })
     })
 
@@ -108,7 +111,7 @@ import { StyleSheet,
     
     .then((res) => {
       console.log("response");
-      console.warn(res);
+      //console.warn(res);
       //Alert.alert(res.message);
       //if entry added
       if(res.success === true){
@@ -119,7 +122,46 @@ import { StyleSheet,
       }
       else {
         alert(res.message);
-        console.warn("error");
+        //console.warn("error");
+      }
+    })
+    
+    .catch(err => {
+      console.log(err);
+    });
+    }
+
+    delete(){
+      fetch(url+'/expensesUpdate',{
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        edit: 4,
+        key:this.state.key,
+        name:this.props.route.params.name,
+        date:(this.state.date),
+      })
+    })
+
+    //recieve entry added confirmation from backend
+    .then((response) => (response.json()))
+    
+    .then((res) => {
+      console.log("response");
+      //console.warn(res);
+      //Alert.alert(res.message);
+      //if entry added
+      if(res.success === true){
+        alert(res.message);
+        this.props.navigation.navigate('AllTrans');
+        
+      }
+      else {
+        alert(res.message);
+        //console.warn("error");
       }
     })
     
@@ -133,13 +175,15 @@ import { StyleSheet,
         console.log(this.props.route.params);
         this.setState({
           edit:this.props.route.params.edit,
-          key: this.props.route.params.key,
-          date:this.props.route.params.date,
-          time:this.props.route.params.time,
-          amt:this.props.route.params.amt,
-          pur:this.props.route.params.pur,
-          desc:this.props.route.params.desc,
+        key: this.props.route.params.trans.key,
+        date:this.props.route.params.date,
+        time:this.props.route.params.trans.time,
+        amt:this.props.route.params.trans.cost,
+        pur:this.props.route.params.trans.purpose,
+        desc:this.props.route.params.trans.description,
+        mode:this.props.route.params.trans.method,
         });
+
       }
       else{
         this.setState({key: this.props.route.params.key});
@@ -147,20 +191,27 @@ import { StyleSheet,
     }
 
     render(){
-
+console.log(this.state.amt);
+console.log("jiji");
       return (
         <View style={styles.container}>
 
         <View style={styles.header}>
-        <Text style={styles.headerText}>- Add Expenses -</Text>
-        <TouchableOpacity style={styles.backBtn} onPress={() => this.props.navigation.navigate('Manager')}>
+        <Text style={styles.headerText}>- Add Expenses -  </Text>
+        <TouchableOpacity style={styles.backBtn} onPress={() => {(this.props.route.params.edit)?this.props.navigation.navigate('Manager'):this.props.navigation.navigate('AllTrans')}}>
         <AntDesign name="arrowleft" size={24} color="black" />
         </TouchableOpacity>
+        {!(this.props.route.params.edit) && <TouchableOpacity style={styles.delBtn} onPress={this.delete}>
+        <MaterialIcons name="delete" size={24} color="black" />
+        </TouchableOpacity>}
         </View>
+
+        <ScrollView>
+
         <View style={styles.input}>
-        <TouchableOpacity onPress={() => this.setState({ isDatePickerVisible: true})}>
+        <TouchableOpacity onPress={() => this.state.edit?(this.setState({ isDatePickerVisible: true})):null}>
         <TextInput style={styles.textinput} placeholder="Date" 
-        placeholderTextColor="black"
+        placeholderTextColor="grey"
         underlineColorAndroid={'transparent'} 
         editable={false}
         value={this.state.date}
@@ -174,9 +225,9 @@ import { StyleSheet,
         onConfirm={this.handleDateConfirm}
         onCancel={() => this.setState({ isDatePickerVisible: false})}
         />
-        <TouchableOpacity onPress={() => this.setState({ isTimePickerVisible: true})}>
+        <TouchableOpacity onPress={() => this.state.edit?(this.setState({ isTimePickerVisible: true})):null}>
         <TextInput style={styles.textinput} placeholder="Time" 
-        placeholderTextColor="black"
+        placeholderTextColor="grey"
         underlineColorAndroid={'transparent'} 
         editable={false}
         value={this.state.time}
@@ -192,22 +243,40 @@ import { StyleSheet,
         />
         
           <TextInput style={styles.textinput} placeholder="Amount" 
-          placeholderTextColor="black"
+          placeholderTextColor="grey"
           underlineColorAndroid={'transparent'} 
+          value={""+this.state.amt}
           onChange = {this.handleAmtChange}
-          keyboardType={'numeric'}/>
-          <TextInput style={styles.textinput} placeholder="Purpose" 
-          placeholderTextColor="black"
-          underlineColorAndroid={'transparent'} 
-          onChange = {this.handlePurChange}/>
+          keyboardType={'numeric'}
+          editable={this.state.edit}
+          />
+          <View style={styles.dropdown}>
+          <Picker mode='dropdown' 
+          style={styles.picker} 
+          selectedValue={this.state.pur}
+          onValueChange={(itemValue, itemIndex) => this.setState({ pur: itemValue })}
+          enabled={this.state.edit}>
+          <Picker.Item label="Purpose" value=""/>
+          <Picker.Item label="Shopping" value="Shopping" />
+          <Picker.Item label="Restaurant" value="Restaurant" />
+          <Picker.Item label="Fuel" value="Fuel" />
+          <Picker.Item label="Medical" value="Medical" />
+          <Picker.Item label="Travel" value="Travel" />
+          <Picker.Item label="Other" value="Other" />
+          </Picker>
+          </View>
           <TextInput style={styles.textinputDiary} placeholder="Description (Optional)" 
-          placeholderTextColor="black" multiline={true}
-          underlineColorAndroid={'transparent'} />
+          placeholderTextColor="grey" multiline={true}
+          underlineColorAndroid={'transparent'} 
+          value={this.state.desc}
+          onChange = {(e)=>this.setState({ desc: e.nativeEvent.text})}
+          editable={this.state.edit}/>
           <View style={styles.dropdown}>
           <Picker mode='dropdown' 
           style={styles.picker} 
           selectedValue={this.state.mode}
-          onValueChange={(itemValue, itemIndex) => this.setState({ mode: itemValue })}>
+          onValueChange={(itemValue, itemIndex) => this.setState({ mode: itemValue })}
+          enabled={this.state.edit}>
           <Picker.Item label="Payment done via..." value=""/>
           <Picker.Item label="Net-Banking" value="Nb" />
           <Picker.Item label="G-Pay/PhonePe/Payment" value="Mb" />
@@ -217,9 +286,11 @@ import { StyleSheet,
           </Picker>
           </View>
           <TouchableOpacity style={styles.button} onPress={this.state.edit?this.save:this.edit}>
-          <Text style={styles.btntext}>{this.state.edit?"Save":"Edit"}</Text>
+          <Text style={styles.btntext}>{this.state.edit?"Save  ":"Edit  "}  </Text>
           </TouchableOpacity>
           </View>
+
+          </ScrollView>
           </View>
 
 
@@ -236,6 +307,7 @@ import { StyleSheet,
       top: 100,
       paddingLeft: 40,
       paddingRight: 40,
+      height:700,
     },
 
     header: {
@@ -338,6 +410,14 @@ import { StyleSheet,
       position: 'absolute',
       zIndex: 11,
       left: 20,
+      alignItems: 'center',
+      justifyContent: 'center',
+      elevation: 8,
+    },
+    delBtn: {
+      position: 'absolute',
+      zIndex: 11,
+      right: 20,
       alignItems: 'center',
       justifyContent: 'center',
       elevation: 8,

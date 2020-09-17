@@ -17,34 +17,38 @@ export default class EventHome extends React.Component {
         >
       <View style={styles.container}>
 
-      <View style={{ flexDirection: 'row', alignItems: 'center', bottom: 150, left: 170, }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', bottom: 150, left: 170}}>
+      <TouchableOpacity onPress={() => this.props.navigation.navigate('EveCal',{name:this.props.route.params.name})}>
       <FontAwesome5 name="calendar-alt" size={60} color="black" />
+      </TouchableOpacity>
       </View>
 
-      <View style={{ flexDirection: 'row', alignItems: 'center', bottom: 130, left: 70, }}>
-      <Text style={styles.btnTextTitle}>Mark the calendar!</Text>
+      <View style={{ alignItems: 'center', bottom: 130, left: 10, }}>
+      
+      <Text style={styles.btnTextTit}>Press the icon ;)  </Text>
+      <Text style={styles.btnTextTitle}>Mark the calendar!  </Text>
       </View>
 
       <View style={{ paddingLeft: 20, paddingRight: 20, alignSelf: 'stretch', bottom: 20, }}>
-      <TouchableOpacity style={ styles.button} onPress={() => this.props.navigation.navigate('EveReminder')}>
+      <TouchableOpacity style={ styles.button} onPress={() => this.props.navigation.navigate('EveReminder',{edit:true,name:this.props.route.params.name, key:Date.now()})}>
       <View style={{ flexDirection: 'row', alignItems: 'center', }}>
       <MaterialCommunityIcons name="bell" size={50} color="#fcbf49" /> 
-      <Text style={styles.btnText}>   Add a Reminder</Text>
+      <Text style={styles.btnText}>   Add a Reminder  </Text>
       </View>
       </TouchableOpacity>
 
-      <TouchableOpacity style={ styles.button} onPress={() => this.props.navigation.navigate('EveNotes')}>
+      <TouchableOpacity style={ styles.button} onPress={() => this.props.navigation.navigate('EveNotes',{edit:true,name:this.props.route.params.name, key:Date.now()})}>
       <View style={{ flexDirection: 'row', alignItems: 'center', right: 20,}}>
      <AntDesign name="form" size={50} color="#1d3557" />
       
-      <Text style={styles.btnText}>   Make a Note</Text>
+      <Text style={styles.btnText}>   Make a Note  </Text>
       </View>
       </TouchableOpacity>
 
-      <TouchableOpacity style={ styles.button} onPress={() => this.props.navigation.navigate('EveSpecial')}>
+      <TouchableOpacity style={ styles.button} onPress={() => this.props.navigation.navigate('EveSpecial',{edit:true,name:this.props.route.params.name, key:Date.now()})}>
       <View style={{ flexDirection: 'row', alignItems: 'center', right: 15, }}>
      <MaterialCommunityIcons name="calendar-heart" size={50} color="#de4d86" />
-      <Text style={styles.btnText}>   Special Events</Text>
+      <Text style={styles.btnText}>   Special Events  </Text>
       </View>
       </TouchableOpacity>
       </View>
@@ -72,6 +76,12 @@ export default class EventHome extends React.Component {
 
     btnTextTitle: {
       fontSize: 28,
+      fontWeight: "700",
+      color: '#000',
+    },
+
+    btnTextTit: {
+      fontSize: 18,
       fontWeight: "700",
       color: '#000',
     },

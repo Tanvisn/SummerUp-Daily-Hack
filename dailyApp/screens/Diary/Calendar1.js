@@ -48,7 +48,6 @@ export default class MyCalendar extends React.Component {
       return this.state;
     });
   //  this.setDots();
-    //requst backend for dates
   }
 
   generateMatrix() {
@@ -215,7 +214,7 @@ render() {
         color: '#fff',
       }}>
       {this.months[this.state.activeDate.getMonth()]} &nbsp;
-      {this.state.activeDate.getFullYear()}
+      {this.state.activeDate.getFullYear()} &nbsp;
       </RN.Text>
       <TouchableOpacity style={{
         position:'absolute',

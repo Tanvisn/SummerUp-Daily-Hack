@@ -1,6 +1,8 @@
+/*tp*/
 import  React, { Component } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, Picker, TextInput } from 'react-native';
 import Constants from 'expo-constants';
+import Note from './pillNote';
 
 export default class MedReports extends React.Component {
   constructor(props){

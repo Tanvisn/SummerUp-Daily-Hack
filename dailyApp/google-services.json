@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1058927624897",
+    "firebase_url": "https://daily-hack.firebaseio.com",
+    "project_id": "daily-hack",
+    "storage_bucket": "daily-hack.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1058927624897:android:648b320138017fd4ad4a40",
+        "android_client_info": {
+          "package_name": "com.summerPlayers.dailyHack"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1058927624897-bd120ctu7i2tait8mmejsf3orbncmi5r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBinAvLR22CxLrkDO-iygFyqnGm2RSgkRQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1058927624897-bd120ctu7i2tait8mmejsf3orbncmi5r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -7,32 +7,32 @@ export default class Food extends React.Component {
     return (
       <View style={styles.container}>
       <View style={styles.header}>
-      <Text style={styles.headerText}>Sources Of Diffrent Food Components:</Text>
+      <Text style={styles.headerText}>Sources Of Diffrent Food Components: </Text>
       </View>
 
       <ScrollView>
       <View style={styles.list}>
       <View style={{ margin: 5,}}>
       <View style={{ alignItems: 'center', justifyContent: 'center', }}>
-      <Text style={styles.headerText}>Carbohydrates</Text>
+      <Text style={styles.headerText}>Carbohydrates </Text>
       </View>
       <Text style={styles.listText}>Unprocessed or minimally processed whole grains, vegetables, fruits and beans
-      are healthy sources of carbohydrates. Some of the sources are:</Text>   
-      <Text style={styles.listText}>- Oats</Text> 
-      <Text style={styles.listText}>- Bananas</Text>
-      <Text style={styles.listText}>- Beetroot</Text>
-      <Text style={styles.listText}>- Sweet Potatoes</Text>
-      <Text style={styles.listText}>- Oranges</Text> 
-      <Text style={styles.listText}>- Apples</Text> 
-      <Text style={styles.listText}>- Kidney Beans</Text> 
+      are healthy sources of carbohydrates. Some of the sources are: </Text>   
+      <Text style={styles.listText}>- Oats </Text> 
+      <Text style={styles.listText}>- Bananas </Text>
+      <Text style={styles.listText}>- Beetroot </Text>
+      <Text style={styles.listText}>- Sweet Potatoes </Text>
+      <Text style={styles.listText}>- Oranges </Text> 
+      <Text style={styles.listText}>- Apples </Text> 
+      <Text style={styles.listText}>- Kidney Beans </Text> 
 
       </View>
 
       <View style={{ margin: 5,}}>
       <View style={{ alignItems: 'center', justifyContent: 'center', }}>
-      <Text style={styles.headerText}>Protein</Text>
+      <Text style={styles.headerText}>Protein </Text>
       </View>
-      <Text style={styles.listText}>A diet that is high in protein may also help lower blood pressure, fight diabetes, and more. Some of the sources are:</Text>   
+      <Text style={styles.listText}>A diet that is high in protein may also help lower blood pressure, fight diabetes, and more. Some of the sources are: </Text>   
       <Text style={styles.listText}>- Eggs</Text> 
       <Text style={styles.listText}>- Almonds</Text>
       <Text style={styles.listText}>- Chicken breast</Text>
@@ -45,10 +45,10 @@ export default class Food extends React.Component {
 
       <View style={{ margin: 10,}}>
      <View style={{ alignItems: 'center', justifyContent: 'center', }}>
-      <Text style={styles.headerText}>Calcium</Text>
+      <Text style={styles.headerText}>Calcium </Text>
       </View>
-      <Text style={styles.listText}>Unprocessed or minimally processed whole grains, vegetables, fruits and beans
-      are healthy sources of carbohydrates. Some of the sources are:</Text>   
+      <Text style={styles.listText}>Calcium enables our blood to clot, our muscles to contract, and our heart to beat.
+       Some of the sources are:</Text>   
       <Text style={styles.listText}>- Milk</Text> 
       <Text style={styles.listText}>- Some leafy vegetables</Text>
       <Text style={styles.listText}>- Soya beans</Text>

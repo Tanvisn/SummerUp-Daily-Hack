@@ -4,18 +4,22 @@ import Constants from 'expo-constants';
 import { Card, CardItem } from 'react-native-elements';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { VictoryPie } from 'victory-native';
+import Svg, { Circle, Rect } from 'react-native-svg';
 import { url } from './../../components/url';
 import moment from "moment";
 
-const graphicColor = ['green', 'red']; // Colors
-const wantedGraphicData = [{ y: 1 }, { y: 7 }, { y: 4 }]; // Data that we want to display
-const defaultGraphicData = [{ y: 0 }, { y: 0 }]; // Data used to make the animate prop work
+const graphicColor = ['#156064', '#e63946']; // Colors
+const defaultGraphicData = [{ y: 10 }, { y: 100 }];
 
 export default class Manager extends React.Component {
   constructor(props){
     super(props);
     this.state={
       graphicData:defaultGraphicData,
+      monthlyTrans:[],
+      inc:0,
+      sav:0,
+      exp:0,
     }
 
     this.fetchEntries=this.fetchEntries.bind(this);
@@ -52,7 +56,7 @@ export default class Manager extends React.Component {
     
     .then((res) => {
       console.log("response");
-      console.warn(res);
+      //console.warn(res);
       //Alert.alert(res.message);
       if(res.success === true){
         var d=moment(Date.now()).format('MM-YYYY');
@@ -65,7 +69,8 @@ export default class Manager extends React.Component {
           inc,
           exp,
           sav:(inc - exp),
-          graphicData:[{ x:"Savings", y:(inc-exp)}, {x:"Expenditure", y:exp}]
+          graphicData:[{ x:(inc-exp), y:(inc-exp)}, {x:exp, y:exp}],
+          monthlyTrans:res.content,
         })
         
       }
@@ -77,21 +82,53 @@ export default class Manager extends React.Component {
     .catch(err => {
       console.log(err);
     });
+    
   }
   render() {
     console.log(this.props.route.params.name);
     return (
       <View style={styles.container}>
-      <View style={{paddingTop:0, paddingBottom:300, paddingLeft:50}}>
+      <View style={{ top:220 }}>
       <VictoryPie
         animate={{ easing: 'exp' }}
         data={this.state.graphicData}
-        width={300}
-        height={300}
+        width={400}
+        height={400}
         colorScale={graphicColor}
-        innerRadius={0}
+        innerRadius={80}
       />
+
+      <View style={{ bottom: 230, left: 170, }}>
+      <Text style={{ fontSize:18, fontWeight:"bold" }}>Income</Text>
+      <Text style={{ fontSize:18, fontWeight:"bold" }}>{this.state.inc}</Text>
+      </View>
+
     </View>
+
+    
+
+      <View style={{ top:130, left:30 }}>
+       <Svg height="50%" width="50%" viewBox="0 0 100 100" 
+       >
+       <Rect x="15" y="15" width="10" height="10" strokeWidth="2" fill="#e63946" />
+    </Svg>
+   
+    </View>
+     <View style={{ bottom:205, left:90, }}>
+      <Text style={{ fontWeight:"bold" }}>Expenses</Text>
+      </View>
+
+
+    <View style={{ bottom:248, left:200 }}>
+       <Svg height="50%" width="50%" viewBox="0 0 100 100" 
+       >
+       <Rect x="15" y="15" width="10" height="10" strokeWidth="2" fill="#156064" />
+    </Svg>
+   
+    </View>
+     <View style={{ bottom:580, left:260, }}>
+      <Text style={{ fontWeight:"bold" }}>Savings</Text>
+      </View>
       <Text style={styles.paragraph}>
       
       </Text>
@@ -100,7 +137,7 @@ export default class Manager extends React.Component {
       <Row>
       
       <Col style={{ borderColor: 'rgb(29, 53, 87)', borderWidth: 2, marginBottom: 10, marginRight: 10, justifyContent: 'center',}}>
-      <TouchableOpacity onPress={() => this.props.navigation.navigate('Income',{name:this.props.route.params.name, edit:1})}>
+      <TouchableOpacity onPress={() => this.props.navigation.navigate('Income',{name:this.props.route.params.name, edit:1, key:Date.now()})}>
       <View style={{ alignItems: 'center', }}>
       <Image
       source={require('../../assets/payment-min.png')}
@@ -111,13 +148,13 @@ export default class Manager extends React.Component {
 
       }}
       />
-      <Text style={styles.nameText}>Add Income</Text>
+      <Text style={styles.nameText}>Add Income  </Text>
       </View>
       </TouchableOpacity>
       </Col>
       
       <Col style={{ borderColor: 'rgb(29, 53, 87)', borderWidth: 2, marginBottom: 10, justifyContent: 'center',}}>
-       <TouchableOpacity onPress={() => this.props.navigation.navigate('Expenditure',{name:this.props.route.params.name, edit:1})}>
+       <TouchableOpacity onPress={() => this.props.navigation.navigate('Expenditure',{name:this.props.route.params.name, edit:1, key:Date.now()})}>
       <View style={{ alignItems: 'center', justifyContent: 'center',}}>
       <Image
       source={require('../../assets/pay-min.png')}
@@ -128,14 +165,14 @@ export default class Manager extends React.Component {
 
       }}
       />
-      <Text style={styles.nameText}>Add Expenses</Text>
+      <Text style={styles.nameText}>Add Expenses  </Text>
       </View>
       </TouchableOpacity>
       </Col>
       </Row>
       <Row>
       <Col style={{ borderColor: 'rgb(29, 53, 87)', borderWidth: 2, marginRight: 10, justifyContent: 'center',}}>
-       <TouchableOpacity onPress={() => this.props.navigation.navigate('Reports')}>
+       <TouchableOpacity onPress={() => this.props.navigation.navigate('Reports',{name:this.props.route.params.name, monthlyTrans:this.state.monthlyTrans})}>
       <View style={{ alignItems: 'center', justifyContent: 'center',}}>
       <Image
       source={require('../../assets/bar-chart-min.png')}
@@ -146,12 +183,12 @@ export default class Manager extends React.Component {
 
       }}
       />
-      <Text style={styles.nameText}>Reports</Text>
+      <Text style={styles.nameText}>Reports  </Text>
       </View>
       </TouchableOpacity>
       </Col>
       <Col style={{ borderColor: 'rgb(29, 53, 87)', borderWidth: 2, justifyContent: 'center',}}>
-       <TouchableOpacity onPress={() => this.props.navigation.navigate('AllTrans')}>
+       <TouchableOpacity onPress={() => this.props.navigation.navigate('AllTrans',{name:this.props.route.params.name})}>
       <View style={{ alignItems: 'center', justifyContent: 'center',}}>
       <Image
       source={require('../../assets/note-min.png')}
@@ -162,7 +199,7 @@ export default class Manager extends React.Component {
         left: 15,
       }}
       />
-      <Text style={styles.nameText}>All Transactions</Text>
+      <Text style={styles.nameText}>All Transactions  </Text>
       </View>
       </TouchableOpacity>
       </Col>

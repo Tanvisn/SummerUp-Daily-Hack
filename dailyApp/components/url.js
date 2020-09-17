@@ -1,2 +1,2 @@
-const url="https://68732422a1b0.ngrok.io";
+const url="https://salty-beyond-53241.herokuapp.com";
 export {url};

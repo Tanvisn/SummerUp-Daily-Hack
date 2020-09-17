@@ -3,36 +3,157 @@ require('mongoose-type-email');
 const bcrypt = require('bcrypt');
 
 const diarySchema = mongoose.Schema({
-    key : Number,
-    date : String,
-    title : String,
-    text : String
+  key: Number,
+  date: String,
+  title: String,
+  text: String
 });
 
 const shoppingSchema = mongoose.Schema({
-    key : Number,
-    title : String,
-    content : Object
+  _id: Number,
+  key: Number,
+  title: String,
+  content: Object
+});
+
+const appointmentsSchema = new mongoose.Schema({
+  _id: String,
+  key : String,
+  title: String,
+  body: String,
+  year: String,
+  month: String,
+  date: String,
+  hour: String,
+  minutes: String,
+  seconds: String,
+  done: Boolean,
+  nameOfDoc: String,
+  medicalSpeciality: String,
+  address: String,
+  phoneNumber: Number
+});
+
+const specialEventsSchema = new mongoose.Schema({
+  _id: String,
+  key : String,
+  title: String,
+  body: String,
+  year: String,
+  month: String,
+  date: String,
+  hour: String,
+  minutes: String,
+  seconds: String,
+  done: Boolean,
+  eventName: String,
+  description: String
+});
+
+const eventsSchema = new mongoose.Schema({
+  _id: String,
+  key : String,
+  title: String,
+  body: String,
+  year: String,
+  month: String,
+  date: String,
+  hour: String,
+  minutes: String,
+  seconds: String,
+  done: Boolean,
+  eventName: String,
+  description: String
+});
+
+const measurementSchema = new mongoose.Schema({
+  _id: String,
+  key : String,
+  title: String,
+  body: String,
+  start_year: String,
+  start_month: String,
+  start_date: Number,
+  end_year: String,
+  end_month: String,
+  end_date: Number,
+  hour: String,
+  minutes: String,
+  seconds: String,
+  typeOfMeasurement: String,
+  description: String,
+  value: Number,
+  unit: String,
+  done: Boolean,
+  datesArray: [Object],
+  startDate: String,
+  endDate: String
+});
+
+const medicinesSchema = new mongoose.Schema({
+  _id: String,
+  key : String,
+  title: String,
+  body: String,
+  start_year: String,
+  start_month: String,
+  start_date: Number,
+  end_year: String,
+  end_month: String,
+  end_date: Number,
+  hour: String,
+  minutes: String,
+  seconds: String,
+  name: String,
+  description: String,
+  done: Boolean,
+  datesArray: [Object],
+  startDate: String,
+  endDate: String
+});
+
+const notes = new mongoose.Schema({
+  _id: String,
+  key: String,
+  title: String,
+  date: String,
+  time: String,
+  yourNotes: String
+});
+
+const inventorySchema = new mongoose.Schema({
+  _id: String,
+  key : String,
+  nameOfMedicine: String,
+  totalPills: Number,
+  pillsInOneDose: Number,
+  remindWhen: Number
 });
 
 const transSchema = mongoose.Schema({
-        _id : String,
-        key : String,
-        pieKey : String,
-        type : String,
-        cost : Number,
-        purpose : String,
-        description : String,
-        time : String,
-        method : String
+  _id: String,
+  key: String,
+  pieKey: String,
+  type: String,
+  cost: Number,
+  purpose: String,
+  description: String,
+  time: String,
+  method: String
 });
 
+const feedbackSchema = mongoose.Schema({
+  _id : String,
+  userName : String,
+  date : String,
+  comments : String,
+  rating : Number
+});
 const expenseSchema = mongoose.Schema({
     _id : String,
     date : String,
     month : String,
     contents : [transSchema]
-    
 });
 
 const listSchema = mongoose.Schema({
@@ -48,8 +169,12 @@ const dataSchema = mongoose.Schema({
 });
 
 const fitnessSchema = mongoose.Schema({
-    list : [listSchema],
-    data : [dataSchema]
+//    list : [listSchema],
+//    data : [dataSchema]
+    _id : Number,
+    key : Number,
+    date : String,
+    list : Object 
 });
 
 const userSchema = new mongoose.Schema({
@@ -82,7 +207,15 @@ const userSchema = new mongoose.Schema({
     diary : [diarySchema],
     shopping : [shoppingSchema],
     expense : [expenseSchema],
-    fitness : [fitnessSchema]
+    fitness : [fitnessSchema],
+    appointments :[appointmentsSchema],
+    measurement: [measurementSchema],
+    medicines: [medicinesSchema],
+    inventory: [inventorySchema],
+    specialEvents: [specialEventsSchema],
+    events: [eventsSchema],
+    notes: [notes],
+    feedback : [feedbackSchema]
 });
 
 userSchema.pre('save' , function(next) {

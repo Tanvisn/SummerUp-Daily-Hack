@@ -5,16 +5,12 @@ export default class Transac extends React.Component {
 
 	render() {
 	return (
-		<TouchableOpacity onPress={this.props.view}>
+		<TouchableOpacity onPress={this.props.view} key={this.props.val.key}>
 		<View key={this.props.keyval} style={styles.item}>
 		
-		<Text  style={ (this.props.val.type === income) ? styles.itemTextIncome : styles.itemTextExp}>{this.props.val.type}</Text>
+		<Text  style={ (this.props.val.type === "income") ? styles.itemTextIncome : styles.itemTextExp}>{this.props.val.type}</Text>
 		<Text style={styles.itemText}>{this.props.val.cost}</Text>
-		<Text style={styles.itemText}>{this.props.val.pur}</Text>
-
-		<TouchableOpacity onPress={this.props.deleteMethod} style={styles.itemDelete}>
-		<Text style={styles.itemDeleteText}>D</Text>
-		</TouchableOpacity>
+		<Text style={styles.itemText}>{this.props.val.purpose}</Text>
 		</View>
 		</TouchableOpacity>
 		);
@@ -28,6 +24,14 @@ const styles = StyleSheet.create({
 		paddingRight: 100,
 		borderBottomWidth: 2,
 		borderBottomColor: '#ededed',
+	},
+
+	itemText:{
+		fontWeight: "600",
+		fontSize: 15,
+		paddingLeft: 20,
+		borderLeftWidth: 10,
+		borderLeftColor: '#e91e63',
 	},
 
 	itemTextIncome: {
@@ -44,9 +48,6 @@ const styles = StyleSheet.create({
 		color: 'red',
 		fontWeight: "700",
 		fontSize: 18,
-		paddingLeft: 20,
-		borderLeftWidth: 10,
-		borderLeftColor: '#e91e63',
 		paddingLeft: 20,
 		borderLeftWidth: 10,
 		borderLeftColor: '#e91e63',

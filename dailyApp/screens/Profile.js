@@ -69,7 +69,7 @@ export default class Profile extends React.Component {
     
     .then((res) => {
       console.log("response");
-      console.warn(res);
+      console.log(res);
       //Alert.alert(res.message);
       //if login successful
       if(res.success === true){
@@ -117,7 +117,7 @@ export default class Profile extends React.Component {
     
     .then((res) => {
       console.log("response");
-      console.warn(res);
+      console.log(res);
       //Alert.alert(res.message);
       //if entry added
       if(res.success === true){
@@ -128,7 +128,7 @@ export default class Profile extends React.Component {
       }
       else {
         alert(res.message);
-        console.warn("error");
+        console.log("error");
       }
     })
     
@@ -186,7 +186,7 @@ export default class Profile extends React.Component {
       <View style={styles.container}>
 
       <View style={{ alignItems: 'center', }}>
-      <Text style={styles.title}>My Profile</Text>
+      <Text style={styles.title}>My Profile </Text>
       </View>
 
       <View style={{marginTop:50}}>

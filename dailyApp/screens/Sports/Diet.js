@@ -39,8 +39,8 @@ render() {
       marginBottom: 10,
     }}
     />
-    <Text style={styles.nameText}>My Plate</Text>
-    <Text style={styles.subtext}>Make it more healthy...</Text>
+    <Text style={styles.nameText}>My Plate </Text>
+    <Text style={styles.subtext}>Make it more healthy...  </Text>
     </View>
     </TouchableOpacity>
     </Row>
@@ -58,8 +58,8 @@ render() {
       marginBottom: 10,
     }}
     />
-    <Text style={styles.nameText}>Keep Yourself Hydrated</Text>
-    <Text style={styles.subtext}>Tips to maintain water balance</Text>
+    <Text style={styles.nameText}>Keep Yourself Hydrated  </Text>
+    <Text style={styles.subtext}>Tips to maintain water balance </Text>
     </View>
     </TouchableOpacity>
     </Row>
@@ -77,8 +77,8 @@ render() {
 
     }}
     />
-    <Text style={styles.nameText}>Sleep well</Text>
-    <Text style={styles.subtext}>How to get better sleep?</Text>
+    <Text style={styles.nameText}>Sleep well  </Text>
+    <Text style={styles.subtext}>How to get better sleep? </Text>
     </View>
     </TouchableOpacity>
     </Row>

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "watsurname",
-    "slug": "watsurname",
+    "name": "DailyHack",
+    "slug": "DailyHack",
     "platforms": [
       "ios",
       "android",
@@ -15,6 +15,12 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "android": {
+      "googleServicesFile": "./google-services.json",
+      "package": "com.summerPlayers.dailyHack",
+      "versionCode": 1,
+      "useNextNotificationsApi" :true,
+    },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -23,6 +29,9 @@
     ],
     "ios": {
       "supportsTablet": true
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
     }
   }
 }

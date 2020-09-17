@@ -9,6 +9,11 @@ export default class Item extends React.Component {
 			checked: false,
 		}
 	}
+
+	componentDidMount(){
+		this.setState({checked:this.props.val.checked});
+	}
+	
 	render() {
 	return (
 
@@ -19,7 +24,7 @@ export default class Item extends React.Component {
 		<CheckBox
 			value={this.state.checked}
 			style={styles.listCheckbox}
-			onValueChange={() => this.setState({ checked: !this.state.checked })}
+			onValueChange={this.props.toggleCheck}
 			/>
 		<TouchableOpacity onPress={this.props.deleteMethod} style={styles.itemDelete}>
 		<Text style={styles.itemDeleteText}>D</Text>

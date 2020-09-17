@@ -27,6 +27,7 @@ console.log("fethcing");
   //  return [{key:12345679, date:"22nd June 2020", title:"check", text:"this is some text"}];
  // }
   //else{
+    setTimeout(() => {
   fetch(url+'/getAllShopLists',{
       method: 'POST',
       headers: {
@@ -43,7 +44,7 @@ console.log("fethcing");
     
     .then((res) => {
       console.log("response");
-      console.warn(res);
+      //console.warn(res);
       if(res.success){
       this.setState({listArray:res.content });
       }
@@ -57,6 +58,7 @@ console.log("fethcing");
     .catch(err => {
       console.log(err);
     });
+  },10)
   //}
 }
   componentDidMount(){
@@ -178,7 +180,7 @@ console.log("fethcing");
     
     .then((res) => {
       console.log("rese");
-      console.warn(res);
+      //console.warn(res);
       //Alert.alert(res.message);
       //if entry added
       if(res.success === true){
@@ -190,7 +192,7 @@ console.log("fethcing");
       }
       else {
         alert(res.message);
-        console.warn("error");
+        //console.warn("error");
       }
     })
     

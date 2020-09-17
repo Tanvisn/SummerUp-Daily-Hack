@@ -14,22 +14,42 @@ mongoose.connect(mongoUrl,  { useUnifiedTopology: true,  useNewUrlParser: true }
 
 require("./models/User");
 const requireToken = require("./middleware/requireTokens");
-
-const authRoutes = require("./routes/authRoutes");
+const confirm = require("./routes/confirm");
+const authroutes_ = require("./routes/authroutes_.js");
+const expense = require("./routes/expense");
+const fitness = require("./routes/fitness");
+const diary = require("./routes/diary");
+const shop_ = require("./routes/shop_");
+const events = require("./routes/events");
+const medical = require("./routes/medical");
+const notif = require("./routes/notif.js");
+const notes = require("./routes/notes.js");
+const fd = require("./routes/feedback.js");
 
 app.use(bodyParser.json());
-app.use(authRoutes);
+
+app.use(authroutes_);
+app.use(expense);
+app.use(fitness);
+app.use(diary);
+app.use(shop_);
+app.use(events);
+app.use(medical);
+app.use(notif);
+app.use(notes);
+app.use(confirm);
+app.use(fd);
 
 mongoose.connection.on("connected", ()=>{
   console.log("Connected to MongoDB");
 });
 
 mongoose.connection.on("error", (err)=>{
-  console.log("This is error", err);
+  console.log("This is error:", err);
 });
 
 app.get("/", requireToken, (req,res)=>{
-  res.send("Your email is  " + req.user.email);
+  res.send(req.user);
 });
 
 app.listen(9000, function() {

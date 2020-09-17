@@ -3,6 +3,8 @@ import React from "react";
 import { SafeAreaView, ScrollView, KeyboardAvoidingView, StyleSheet,Text, View, TouchableOpacity, Picker, TextInput, Platform } from "react-native";
 import AsyncStorage from '@react-native-community/async-storage';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import * as Notifications from 'expo-notifications';
+import * as Permissions from 'expo-permissions';
 import { url } from './../components/url';
 
 export default class Signup extends React.Component{
@@ -18,6 +20,7 @@ export default class Signup extends React.Component{
     };
     this.handleSignup = this.handleSignup.bind(this);
     this.storeInAsync = this.storeInAsync.bind(this);
+    this.getToken = this.getToken.bind(this);
   }
 
   storeInAsync = async(ageGrp) =>{
@@ -30,9 +33,21 @@ export default class Signup extends React.Component{
     }));
   }
 
-  handleSignup(){
+  getToken = async () => {
+    const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+    if (status !== 'granted') {
+      return;
+    }
+    let token = (await Notifications.getExpoPushTokenAsync());
+    console.log(token);
+    return token;  
+  }
+
+
+  async handleSignup(){
     var ageGrp=0;
-    
+//    var token = await this.getToken();
+//    console.log(token);
     if(this.state.age==="kids"){
       ageGrp=1;
     }
@@ -45,8 +60,8 @@ export default class Signup extends React.Component{
     else if(this.state.age==="elderly"){
       ageGrp=4;
     }
-    else{
-      //alert select age
+    else{ 
+      //alert select age  
       alert("Select Age");
       return;
     }
@@ -60,6 +75,7 @@ export default class Signup extends React.Component{
     }
     else{*/
     //send data to backend
+    console.log(" token");
     fetch(url+'/signup',{
       method: 'POST',
       headers: {
@@ -72,7 +88,8 @@ export default class Signup extends React.Component{
         email:this.state.email,
         age:ageGrp,
         fName:this.state.Fname,
-        lName:this.state.Lname
+        lName:this.state.Lname,
+    //    reminderToken: token.data
       })
     })
 
@@ -80,8 +97,11 @@ export default class Signup extends React.Component{
     .then((response) => (response.json()))
     
     .then((res) => {
-      console.log("response");
-      console.warn(res);
+      console.log("responseh");
+      console.log(res);
+//      console.log(" token");
+  //    console.log(token);
+    //  console.log(" token");
       //Alert.alert(res.message);
       //if signup successful
       if(res.success === true){
@@ -95,7 +115,7 @@ export default class Signup extends React.Component{
       }
       else {
         alert(res.message);
-        console.warn("user already exists or error");
+        console.log("user already exists or error");
       }
     })
     
@@ -111,8 +131,8 @@ export default class Signup extends React.Component{
     <View style={styles.containerV}>
     
       <Text style={styles.title}>Sign Up!</Text>
-      <KeyboardAvoidingView style={styles.container} behavior={Platform.Os=="ios"?"padding":"height"} enable>
-    <ScrollView contentContainerStyle={styles.scrollView} >
+    {/*  <KeyboardAvoidingView style={styles.container} behavior={Platform.Os==="ios"?"padding":"height"} enable>*/}
+    <ScrollView contentContainerStyle={styles.scrollView} enable>
       
       <Text style={styles.text}>First Name</Text>
         <TextInput style={styles.input} //placeholder="First Name" 
@@ -160,7 +180,7 @@ export default class Signup extends React.Component{
         <Text style={styles.btntext}>Submit</Text>
         </TouchableOpacity>
         </ScrollView>
-        </KeyboardAvoidingView>
+      {/*  </KeyboardAvoidingView> */}
         </View>
       );
 }
@@ -189,7 +209,7 @@ const styles = StyleSheet.create({
     paddingRight: 60,
   },
   scrollView: {
-   width: 300,
+   width: 295,
     alignSelf: 'stretch',
     alignItems: 'center',
     justifyContent: 'flex-start',

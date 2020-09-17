@@ -26,7 +26,8 @@ export default class NewEntry extends React.Component{
       key:0,
       date: "",
       title: "",
-      text:""
+      text:"",
+      called:false,
     };
     this.hideDatePicker = this.hideDatePicker.bind(this);
     this.handleConfirm = this.handleConfirm.bind(this);
@@ -34,6 +35,7 @@ export default class NewEntry extends React.Component{
     this.edit = this.edit.bind(this);
     this.handleTitleChange = this.handleTitleChange.bind(this);
     this.handleTextChange = this.handleTextChange.bind(this);
+    
   }
 
   hideDatePicker(){
@@ -42,18 +44,18 @@ export default class NewEntry extends React.Component{
 
   handleConfirm(date) {
     this.hideDatePicker();
-  //  console.warn(moment('2020-06-22').format('Do MMM YYYY'));
-    this.setState({ date:moment(date).format('Do MMMM YYYY')});
+  //  console.log(moment('2020-06-22').format('Do MMM YYYY'));
+    this.setState({ date:moment(date).format('Do MMMM YYYY'), called:false});
   };
 
   handleTitleChange(e){
     console.log(e.nativeEvent.text);
-    this.setState({ title: e.nativeEvent.text});
+    this.setState({ title: e.nativeEvent.text, called:false});
   }
 
   handleTextChange(e){
     console.log(e.nativeEvent.text);
-    this.setState({ text: e.nativeEvent.text});
+    this.setState({ text: e.nativeEvent.text, called:false});
   }
 
   edit(){
@@ -74,7 +76,8 @@ export default class NewEntry extends React.Component{
     }
     else{
 */    //send to backend
-    
+    if(this.state.called){}
+        else{
     fetch(url+'/saveEntry',{
       method: 'POST',
       headers: {
@@ -96,32 +99,39 @@ export default class NewEntry extends React.Component{
     
     .then((res) => {
       console.log("response");
-      console.warn(res);
+      console.log(res);
       //Alert.alert(res.message);
       //if entry added
       if(res.success === true){
         alert(res.message);
         this.edit();
     //    this.props.route.params.beforeGoBack();
+    this.setState({called:true});
         if(this.props.route.params.edit){
-          this.props.navigation.goBack();
+          this.props.navigation.navigate('Diary');
         }
       }
       else {
         alert(res.message);
-        console.warn("error");
+        console.log("error");
       }
     })
     
     .catch(err => {
       console.log(err);
     });
-  //  }
+    }
     //this.props.navigation.navigate('Diary',{key: this.state.key, date:this.state.date,title:this.state.title});
     
   }
 
   componentDidMount(){
+    this._unsubscribeSiBlur = this.props.navigation.addListener('blur', e => {
+        console.log('blur entry page');
+        if(this.state.date!=="" && (this.state.title!=="" || this.state.text!=="")){
+          this.save();
+        }
+    });
     if(!this.props.route.params.edit){
       console.log(this.props.route.params);
     this.setState({
@@ -129,12 +139,18 @@ export default class NewEntry extends React.Component{
       key: this.props.route.params.key,
       date:this.props.route.params.date,
       title:this.props.route.params.title,
-      text:this.props.route.params.text
+      text:this.props.route.params.text,
+      called:true,
     });
     }
     else{
       this.setState({key: this.props.route.params.key, date:this.props.route.params.date});
     }
+
+  }
+
+  componentWillUnmount(){
+    this._unsubscribeSiBlur();
   }
 
   render(){
@@ -143,11 +159,8 @@ export default class NewEntry extends React.Component{
   return (
     <ImageBackground
         source={require('../../assets/diaryBackground.png')  
-          //uri:
-          //'https://images.unsplash.com/photo-1439853949127-fa647821eba0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60',
-                
+          
         }
-        //style={{ width: 200, height: 200, marginTop: 20 }}
         style={styles.back}
         >
         <View style={styles.container}>

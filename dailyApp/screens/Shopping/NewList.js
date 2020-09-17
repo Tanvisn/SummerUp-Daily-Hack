@@ -13,6 +13,9 @@ export default class NewList extends React.Component {
       itemText: '',
       inputText: '',
       edit:true,
+      title:"",
+      called:false,
+      key:0,
     }
     this.saveList=this.saveList.bind(this);
     this.toggleEdit=this.toggleEdit.bind(this);
@@ -22,6 +25,8 @@ export default class NewList extends React.Component {
     saveList(){
       //go to backend with itemArray
       console.log(this.state.itemArray);
+      if(this.state.called){}
+        else{
       fetch(url+'/saveShopList',{
       method: 'POST',
       headers: {
@@ -42,11 +47,12 @@ export default class NewList extends React.Component {
     
     .then((res) => {
       console.log("response");
-      console.warn(res);
+      //console.warn(res);
       //Alert.alert(res.message);
       //if entry added
       if(res.success === true){
         alert(res.message);
+        this.setState({called:true});
         this.props.navigation.navigate('Shopping');
     //    this.toggleEdit();
     //    this.props.route.params.beforeGoBack();
@@ -54,13 +60,14 @@ export default class NewList extends React.Component {
       }
       else {
         alert(res.message);
-        console.warn("error");
+        //console.warn("error");
       }
     })
     
     .catch(err => {
       console.log(err);
     });
+  }
     }
 
     toggleEdit(){
@@ -80,15 +87,30 @@ export default class NewList extends React.Component {
     }
 
     componentDidMount(){
+      this._unsubscribeSiBlur = this.props.navigation.addListener('blur', e => {
+        console.log('blur New shopping list page');
+        if(this.state.title!=="" || this.state.itemArray.length!==0){
+          this.saveList();
+        }
+      });
       if(this.props.route.params.edit){
-        this.setState({edit: true});
+        this.setState({
+          title:this.props.route.params.title,
+          key:this.props.route.params.key,
+        });
       }
       else{
         this.setState({
+          edit: false,
           itemArray:this.props.route.params.items,
+          title:this.props.route.params.title,
+          called:true,
         });
      
       }
+    }
+    componentWillUnmount(){
+      this._unsubscribeSiBlur();
     }
   
     render() {
@@ -98,18 +120,16 @@ export default class NewList extends React.Component {
         <View style={styles.container}>
         
         <View style={styles.header}>
-        <Text style={styles.headerText}>{this.props.route.params.title}</Text>
-        {this.state.edit?(<TouchableOpacity 
+        <TextInput style={styles.headerText} placeholder={this.state.title===""?"Title":null} 
+        placeholderTextColor="black"
+        underlineColorAndroid={'transparent'} 
+        onChange={(e) => this.setState({title:e.nativeEvent.text,called:false})}
+        value={this.state.title}/>
+        <TouchableOpacity 
          style={styles.saveButton}
          onPress={this.saveList}>
-          <Text style={styles.saveButtonText}>Save</Text>
-        </TouchableOpacity>):
-        (<TouchableOpacity 
-         style={styles.saveButton}
-         onPress={this.toggleEdit}>
-          <Text style={styles.saveButtonText}>Add</Text>
+          <Text style={styles.saveButtonText}>Save </Text>
         </TouchableOpacity>
-        )}
         </View>
 
 
@@ -119,19 +139,19 @@ export default class NewList extends React.Component {
 
         </ScrollView>
 
-        {this.state.edit && <View style={styles.footer}>
+        <View style={styles.footer}>
         <TextInput style={styles.textInput}
-        onChangeText={(itemText) => this.setState({itemText})}
+        onChangeText={(itemText) => this.setState({itemText, called:false})}
         value={this.state.itemText}
         placeholder='> Type here to add an Item'
         placeholderTextColor='white'
         underlineColorAndroid={'transparent'} />
 
-        </View>}
+        </View>
 
-        {this.state.edit && <TouchableOpacity onPress={this.addItem.bind(this)} style={styles.addButton}>
+        <TouchableOpacity onPress={this.addItem.bind(this)} style={styles.addButton}>
         <Text style={styles.addButtonText}>+</Text>
-        </TouchableOpacity>}
+        </TouchableOpacity>
 
         </View>
         );
@@ -147,7 +167,7 @@ export default class NewList extends React.Component {
           quantity: 2
         });
         console.log("adding");
-        this.setState({ itemArray: this.state.itemArray });
+        this.setState({ itemArray: this.state.itemArray,called:false });
         this.setState({ itemText: '' });
       }
     }
@@ -155,7 +175,7 @@ export default class NewList extends React.Component {
     deleteItem(key) {
       this.state.itemArray.splice(key,1);
       console.log("delete item");
-      this.setState({ itemArray: this.state.itemArray });
+      this.setState({ itemArray: this.state.itemArray,called:false });
     }
 
     toggleCheckItem(key) {
@@ -164,8 +184,8 @@ export default class NewList extends React.Component {
       var itt=this.state.itemArray.filter(it => it.key===key);
       itt[0].checked = !itt[0].checked;
       var item=this.state.itemArray.map(it => it.key===key?itt[0]:it);
-      console.warn(item);
-      this.setState({ itemArray: item });
+      //console.warn(item);
+      this.setState({ itemArray: item,called:false });
     
     }
 

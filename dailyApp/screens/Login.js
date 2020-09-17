@@ -71,7 +71,7 @@ export default class Login extends React.Component{
     
     .then((res) => {
       console.log("response");
-      console.warn(res);
+      //console.warn(res);
       //Alert.alert(res.message);
       //if login successful
       if(res.success === true){
@@ -87,7 +87,7 @@ export default class Login extends React.Component{
       }  
         this.props.navigation.dispatch(
         CommonActions.reset({
-          
+          index: 1,
         routes: [
                   {name: 'Login'} , 
                   { name: 'loading',params: {age: res.age, name:this.state.name}},
@@ -96,7 +96,7 @@ export default class Login extends React.Component{
       }
       else {
         alert("Incorrect Username or Password");
-        console.warn("Incorrect Username or Password");
+        //console.warn("Incorrect Username or Password");
       }
     })
     
@@ -131,10 +131,10 @@ export default class Login extends React.Component{
    onChange = {(e) => this.setState({ pass: e.nativeEvent.text})}
    />
    <TouchableOpacity style={ styles.button } onPress={this.handleLogin}>
-   <Text style={ styles.buttonText }>Login</Text>
+   <Text style={ styles.buttonText }>Login </Text>
    </TouchableOpacity>
    <TouchableOpacity style={ styles.button } onPress={() => this.props.navigation.navigate('signup')}>
-   <Text style={ styles.buttonText }>Sign Up</Text>
+   <Text style={ styles.buttonText }>Sign Up </Text>
    </TouchableOpacity>
    </View>
    </ImageBackground>
