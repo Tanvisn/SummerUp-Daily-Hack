@@ -4,14 +4,15 @@
 This is a cute multipurpose mobile app with several features that fulfills your daily requirements. 
 Created in approximately 50 days as a part of Summer up 2020, this is a Walmart prize winning submission. 
 Frontend has been coded in React Native and backend using Nodejs and the database used is MongoDB. 
-Backend server is hosted on Heroku, and not included in this repo. 
+Backend server is hosted on Heroku, and the code is included in 'authServer' directory. 
 
 ### How to run:
-- Install expo on your system. 
-- install expo app on your android device
-- open the cloned folder on the terminal and run `expo start`
+- Clone the repository
+- Navigate to 'dailyApp' folder and run `yarn` to install all packages
+- Install 'Expo' app on your android device. The app can be found on Google Play Store
+- In the 'dailyApp' directory, run `expo start`
 - Scan the QR code shown in the browser using the expo app on your device.
-- Enjoy the app :)
+- Login and rate the app :)
 
 #### Login Page:
 You can access your data anywhere, anytime and on any device by simply logging into the app.
@@ -80,5 +81,3 @@ This feature provides the user medicine reminders. This includes :
 - This feature also reminds the user at the user inputted time of the day for the measurements.
 
 <img src="/screenshots/img19.jpg" width="200" height="400">  <img src="/screenshots/img20.jpg" width="200" height="400">  <img src="/screenshots/img21.jpg" width="200" height="400"> 
-
-Please add your team members too!
