@@ -20,17 +20,10 @@ export default class AllEntries extends React.Component {
     this.reloadOnBack=this.reloadOnBack.bind(this);
     this.fetchEntries=this.fetchEntries.bind(this);
     this.createEntries=this.createEntries.bind(this);
-     //   this._unsubscribeSiBlur = this.props.navigation.addListener('blur', e => {
-        ////console.warn('blur diary');
-   // });
   }
 
   fetchEntries(){
 console.log("fethcing");
- // if(Platform.OS === 'ios' || Platform.OS === 'android'){
-  //  return [{key:12345679, date:"22nd June 2020", title:"check", text:"this is some text"}];
- // }
-  //else{
   fetch(url+'/getAllEventEntries',{
       method: 'POST',
       headers: {
@@ -46,7 +39,6 @@ console.log("fethcing");
     
     .then((res) => {
       console.log("response");
-      //console.warn(res);
       if(res.success){
       this.setState({eventArray:res.content});
       }
@@ -60,16 +52,12 @@ console.log("fethcing");
     .catch(err => {
       console.log(err);
     });
-  //}
 }
   componentDidMount(){
-//  if(Platform.OS === 'ios' || Platform.OS === 'android'){}
-//  else{
     this.focusListener = this.props.navigation.addListener('focus', ()=>{
       this.setState({eventArray:this.props.route.params.eventArray})
     });
     console.log(this.state.entryArray);
-  //}
     console.log("diary mount");
   }
 
@@ -79,7 +67,6 @@ console.log("fethcing");
   }
 
   reloadOnBack(){
-  //  this.setState({eventArray: entries});
   }
 
   createEntries(){
@@ -93,32 +80,6 @@ console.log("fethcing");
 
   render() {
     console.log("diary render");
-    
-    /*if(this.props.route.params){
-      console.log(this.props.route.params);
-      var entries=this.state.eventArray;
-      console.log(entries);
-      var it=this.state.eventArray.filter(i => i.key===this.props.route.params.key);
-      console.log(it);
-      if(it && it.length){}
-      else{
-      entries.push({
-          key:this.props.route.params.key,
-          date:this.props.route.params.date,
-          title:this.props.route.params.title,
-          text: this.props.route.params.text
-        });
-      console.log(entries);
-    this.state.eventArray=entries;
-      }
-      console.log("entries");
-      console.log(entries);
-      console.log("entries");
-    }*/
-
-    
-//    console.log(entries);
-
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -141,20 +102,9 @@ console.log("fethcing");
     );
   }
 
-  //
-
   deleteEntry(key) {
     console.log("del");
-    
-  /*  if(Platform.OS === 'ios' || Platform.OS === 'android'){
-      var itt=this.state.eventArray.filter(it => it.key!==key);
-      console.log(itt);
-      this.setState({ eventArray: itt });
-    }
-
-    else{
-*/    //send to backend
-    
+ //send to backend   
     fetch(url+'/saveEntry',{
       method: 'POST',
       headers: {
@@ -173,26 +123,22 @@ console.log("fethcing");
     
     .then((res) => {
       console.log("response");
-      //console.warn(res);
-      //Alert.alert(res.message);
       //if entry added
       if(res.success === true){
-    //    alert(res.message);
-    //    this.setState({eventArray:res.content});
+   
         var entry = this.state.eventArray.filter(it => it.key!==key);
         this.setState({eventArray:entry});
         
       }
       else {
         alert(res.message);
-        //console.warn("error");
       }
     })
     
     .catch(err => {
       console.log(err);
     });
-  //  }
+ 
   }
 
   viewEntry(key){
@@ -201,9 +147,6 @@ console.log("fethcing");
     var itt=this.state.eventArray.filter(it => it.key===key);
     //get text value from backend
     console.log(this.state.eventArray);
-    console.log(itt);
-    //var itt = JSON.parse(ittt);
-    console.log(itt[0]);
     if(itt[0].title==="Event Reminder")
     this.props.navigation.navigate('EveReminder', {edit:false, key:key, data:itt[0],  date:this.props.route.params.date, name:this.props.route.params.name});
     else if(itt[0].title==="Special Event Reminder")
