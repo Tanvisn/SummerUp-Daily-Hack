@@ -34,23 +34,7 @@ export default class Login extends React.Component{
     }));
   }
   handleLogin(){
-
-/*    if(Platform.OS === 'ios' || Platform.OS === 'android'){
-      this.storeInAsync();
-
-      this.props.navigation.dispatch(
-        CommonActions.reset({
-          
-        routes: [
-                  {name: 'Login'} , 
-                  { name: 'loading',params: {age: this.state.age, name:this.state.name}},
-                ],  
-      }));
-    }
-    else{*/
     //send data to backend
-    //Alert.alert("hiii");
-    console.log(Date.now());
     const param1=this.state.name;
     const param2=this.state.pass;
     
@@ -70,18 +54,13 @@ export default class Login extends React.Component{
     .then((response) => (response.json()))
     
     .then((res) => {
-      console.log("response");
-      //console.warn(res);
-      //Alert.alert(res.message);
       //if login successful
       if(res.success === true){
-        //this.state.age=3;
         if(Platform.OS === 'ios' || Platform.OS === 'android'){
           this.storeInAsync(res);
         }
         else{
         localStorage.setItem('auth_data', JSON.stringify({
-        //age: this.state.age,
         name: this.state.name
       }));
       }  
@@ -96,15 +75,12 @@ export default class Login extends React.Component{
       }
       else {
         alert("Incorrect Username or Password");
-        //console.warn("Incorrect Username or Password");
       }
     })
     
     .catch(err => {
       console.log(err);
     });
-//  }
-  //  this.props.navigation.navigate('loading', {age: this.state.age});
   }
 
   render(){
@@ -153,15 +129,9 @@ const styles = StyleSheet.create({
    paddingRight: 60,
  },
  button: {
-   /*alignItems: "center",
-    paddingVertical: 10,
-    margin: 5,
-    paddingHorizontal: 15,
-    borderRadius: 25,*/
     alignSelf: 'stretch',
     alignItems: 'center',
     padding: 20,
-    //backgroundColor: '#2ba189',
     borderBottomColor: 'black',
     borderBottomWidth: 1,
     borderRadius: 5,
@@ -189,9 +159,7 @@ const styles = StyleSheet.create({
    paddingLeft:10,
    marginBottom: 20,
    borderBottomColor: 'black',
-   borderBottomWidth: 1,
-     //borderRadius: 5,
-     textAlignVertical: "top",
-     //backgroundColor: 'rgba(255,255,255,0.6)',
+   borderBottomWidth: 1, 
+   textAlignVertical: "top", 
    },
  });

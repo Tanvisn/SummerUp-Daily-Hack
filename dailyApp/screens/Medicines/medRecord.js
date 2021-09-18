@@ -185,14 +185,6 @@ import { StyleSheet,
 
 componentDidMount() {
   this.registerForPushNotificationsAsync();
-/*
-  Notifications.addNotificationReceivedListener(notification => {
-    this.setState({notification:true});
-  });
-
-  Notifications.addNotificationResponseReceivedListener(response => {
-    console.log(response);
-  });*/
 }
 
 render(){

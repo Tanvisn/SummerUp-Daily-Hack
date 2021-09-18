@@ -66,16 +66,8 @@ export default class NewEntry extends React.Component{
   save(){
     console.log(this.props.route);
     console.log(this.state.title);
-
-/*    if(Platform.OS === 'ios' || Platform.OS === 'android'){
-      this.edit();
-      this.props.route.params.beforeGoBack();
-      if(this.props.route.params.edit){
-        this.props.navigation.goBack();
-      }
-    }
-    else{
-*/    //send to backend
+    
+//send to backend
     if(this.state.called){}
         else{
     fetch(url+'/saveEntry',{

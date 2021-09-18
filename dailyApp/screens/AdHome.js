@@ -3,8 +3,6 @@ import React from "react";
 import { StyleSheet,Text, View, Button, Image, Platform, Alert, BackHandler } from "react-native";
 import { Card, CardItem } from 'react-native-elements';
 import AsyncStorage from '@react-native-community/async-storage';
-//import AllLists from './Shopping/AllLists.js';
-//import newList from './Shopping/newList.js';
 
 export default class AdHome extends React.Component{
 

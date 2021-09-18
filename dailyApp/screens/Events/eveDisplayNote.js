@@ -57,14 +57,6 @@ export default class Note extends React.Component {
 	}
 }
 
-/*For Reminder
-<AntDesign name="clockcircle" size={40} color="#577399" />
-For special events
-<AntDesign name="heart" size={40} color="#ff006e" />
-For notes
-<Entypo name="book" size={40} color="#006d77" />*/
-
-
 const styles = StyleSheet.create({
 	note: {
 		position: 'relative',
