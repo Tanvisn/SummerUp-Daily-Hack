@@ -23,10 +23,6 @@ export default class AllLists extends React.Component {
 
   fetchLists(){
 console.log("fethcing");
- // if(Platform.OS === 'ios' || Platform.OS === 'android'){
-  //  return [{key:12345679, date:"22nd June 2020", title:"check", text:"this is some text"}];
- // }
-  //else{
     setTimeout(() => {
   fetch(url+'/getAllShopLists',{
       method: 'POST',
@@ -51,7 +47,6 @@ console.log("fethcing");
       else{
         alert("Couldn't fetch data. Please try again.");
       }
-      //Alert.alert(res.message);
       
     })
     
@@ -59,16 +54,13 @@ console.log("fethcing");
       console.log(err);
     });
   },10)
-  //}
+ 
 }
   componentDidMount(){
-//  if(Platform.OS === 'ios' || Platform.OS === 'android'){}
-//  else{
     this.focusListener = this.props.navigation.addListener('focus', ()=>{
       this.fetchLists();
     });
     console.log(this.state.listArray);
-  //}
     console.log("diary mount");
   }
 
@@ -79,7 +71,6 @@ console.log("fethcing");
 
   reloadOnBack(){
     this.fetchLists();
-  //  this.setState({listArray: entries});
   }
 
   createLists(){
@@ -98,8 +89,6 @@ console.log("fethcing");
     //get text value from backend
     console.log(this.state.listArray);
     console.log(list);
-    //var itt = JSON.parse(ittt);
-  //  console.log(list[0]);
     this.props.navigation.navigate('NewList', {edit:false, key:key, title:list[0].title, name:this.props.route.params.name, items:list[0].content})
   }
 
@@ -152,14 +141,6 @@ console.log("fethcing");
 
   deleteList(key) {
     console.log("del");
-    
-    /*if(Platform.OS === 'ios' || Platform.OS === 'android'){
-      var itt=this.state.listArray.filter(it => it.key!==key);
-      console.log(itt);
-      this.setState({ listArray: itt });
-    }
-
-    else{*/
     //send to backend
     
     fetch(url+'/saveShopList',{
@@ -180,19 +161,14 @@ console.log("fethcing");
     
     .then((res) => {
       console.log("rese");
-      //console.warn(res);
-      //Alert.alert(res.message);
       //if entry added
       if(res.success === true){
-    //    alert(res.message);
-    //    this.setState({listArray:res.content});
         var list = this.state.listArray.filter(it => it.key!==key);
         this.setState({listArray:list});
         
       }
       else {
         alert(res.message);
-        //console.warn("error");
       }
     })
     
@@ -200,7 +176,6 @@ console.log("fethcing");
       console.log(err);
     });
     }
-  //}
 }
 
 const styles = StyleSheet.create({
