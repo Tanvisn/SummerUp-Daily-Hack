@@ -69,13 +69,10 @@ console.log("fethcing");
   //}
 }
   componentDidMount(){
-//  if(Platform.OS === 'ios' || Platform.OS === 'android'){}
-//  else{
     this.focusListener = this.props.navigation.addListener('focus', ()=>{
       this.fetchEntries();
     });
     console.log(this.state.entryArray);
-  //}
     console.log("diary mount");
   }
 
@@ -86,7 +83,6 @@ console.log("fethcing");
 
   reloadOnBack(){
     this.fetchEntries();
-  //  this.setState({entryArray: entries});
   }
 
   createEntries(){
@@ -100,31 +96,6 @@ console.log("fethcing");
 
   render() {
     console.log("diary render");
-    
-    /*if(this.props.route.params){
-      console.log(this.props.route.params);
-      var entries=this.state.entryArray;
-      console.log(entries);
-      var it=this.state.entryArray.filter(i => i.key===this.props.route.params.key);
-      console.log(it);
-      if(it && it.length){}
-      else{
-      entries.push({
-          key:this.props.route.params.key,
-          date:this.props.route.params.date,
-          title:this.props.route.params.title,
-          text: this.props.route.params.text
-        });
-      console.log(entries);
-    this.state.entryArray=entries;
-      }
-      console.log("entries");
-      console.log(entries);
-      console.log("entries");
-    }*/
-
-    
-//    console.log(entries);
 
   return (
     <View style={styles.container}>
@@ -173,16 +144,7 @@ console.log("fethcing");
 
   deleteEntry(key) {
     console.log("del");
-    
-  /*  if(Platform.OS === 'ios' || Platform.OS === 'android'){
-      var itt=this.state.entryArray.filter(it => it.key!==key);
-      console.log(itt);
-      this.setState({ entryArray: itt });
-    }
-
-    else{
-*/    //send to backend
-    
+   
     fetch(url+'/saveEntry',{
       method: 'POST',
       headers: {
@@ -206,7 +168,6 @@ console.log("fethcing");
       //if entry added
       if(res.success === true){
     //    alert(res.message);
-    //    this.setState({entryArray:res.content});
         var entry = this.state.entryArray.filter(it => it.key!==key);
         this.setState({entryArray:entry});
         
