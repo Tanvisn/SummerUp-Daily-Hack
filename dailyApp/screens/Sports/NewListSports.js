@@ -83,21 +83,15 @@ export default class NewListSports extends React.Component {
         .then((response) => (response.json()))
         
         .then((res) => {
-          console.log("response");
-          //console.warn(res);
-          //Alert.alert(res.message);
           //if entry added
           if(res.success === true){
             alert(res.message);
             this.setState({called:true});
           this.props.navigation.navigate('AllListSports');
-        //    this.toggleEdit();
-        //    this.props.route.params.beforeGoBack();
-            
           }
           else {
             alert(res.message);
-            //console.warn("error");
+           
           }
         })
         
@@ -133,21 +127,14 @@ export default class NewListSports extends React.Component {
         .then((response) => (response.json()))
         
         .then((res) => {
-          console.log("response");
-          //console.warn(res);
-          //Alert.alert(res.message);
           //if entry added
           if(res.success === true){
             alert(res.message);
             this.setState({called:true});
-          this.props.navigation.navigate('AllListSports');
-        //    this.toggleEdit();
-        //    this.props.route.params.beforeGoBack();
-            
+            this.props.navigation.navigate('AllListSports');
           }
           else {
             alert(res.message);
-            //console.warn("error");
           }
         })
         
@@ -186,21 +173,14 @@ export default class NewListSports extends React.Component {
         .then((response) => (response.json()))
         
         .then((res) => {
-          console.log("response");
-          //console.warn(res);
-          //Alert.alert(res.message);
           //if entry added
           if(res.success === true){
             alert(res.message);
             this.setState({called:true});
-          this.props.navigation.navigate('AllListSports');
-        //    this.toggleEdit();
-        //    this.props.route.params.beforeGoBack();
-            
+            this.props.navigation.navigate('AllListSports');
           }
           else {
             alert(res.message);
-            //console.warn("error");
           }
         })
         
@@ -212,16 +192,12 @@ export default class NewListSports extends React.Component {
     }
 
     toggleEdit(){
-    //  console.log(this.state);
       this.setState({edit:!(this.state.edit)})
     }
 
     createItems(){
       console.log(this.state.itemArray);
       return(this.state.itemArray.map((val,key) => {
-        console.log("items");
-        console.log(val);
-        console.log("items");
         return <Item key={key} keyval={key} val={val}
         deleteMethod={ ()=> this.deleteItem(key) } toggleCheck={()=>this.toggleCheckItem(val.key)}/>
       }))
@@ -229,7 +205,6 @@ export default class NewListSports extends React.Component {
 
     componentDidMount(){
       this._unsubscribeSiBlur = this.props.navigation.addListener('blur', e => {
-        console.log('blur New shopping list page');
         if(this.state.title!=="" || this.state.itemArray.length!==0){
           this.saveListOnBack();
         }
@@ -254,7 +229,6 @@ export default class NewListSports extends React.Component {
     }
 
     render() {
-      
 
       return (
         <View style={styles.container}>
@@ -344,19 +318,14 @@ export default class NewListSports extends React.Component {
       deleteItem(key) {
         this.state.itemArray.splice(key,1);
         this.setState({ itemArray: this.state.itemArray })
-      //tp
       }
 
        toggleCheckItem(key) {
-   //   if(this.state.itemArray!==[]){
-      var itt=this.state.itemArray.filter(it => it.key===key);
-      itt[0].checked = !itt[0].checked;
-      var item=this.state.itemArray.map(it => it.key===key?itt[0]:it);
-      //console.warn(item);
-      this.setState({ itemArray: item });
-    
+        var itt=this.state.itemArray.filter(it => it.key===key);
+        itt[0].checked = !itt[0].checked;
+        var item=this.state.itemArray.map(it => it.key===key?itt[0]:it);
+        this.setState({ itemArray: item });
     }
-
 
     }
 
