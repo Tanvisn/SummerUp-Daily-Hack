@@ -109,25 +109,12 @@ export default class StopWatch extends Component {
       </TouchableOpacity>
       </View>
 
-
-   {   /*<View style={styles.footer}>
-
-      <TouchableOpacity style={styles.navButton} onPress={() => this.props.navigation.navigate('Sports')}><Text style={styles.navButtonText}>My Plan</Text></TouchableOpacity>
-      <TouchableOpacity style={styles.navButton}><Text style={styles.navButtonTextSpecial}>Stop Watch</Text></TouchableOpacity>    
-      <TouchableOpacity style={styles.navButton} onPress={() => this.props.navigation.navigate('Timer')}><Text style={styles.navButtonText}>Timer</Text></TouchableOpacity>
-      <TouchableOpacity style={styles.navButton} onPress={() => this.props.navigation.navigate('Fitness')}><Text style={styles.navButtonText}>Fitness</Text></TouchableOpacity>
-
-      </View>
-*/}
       </View>
       );
     }
   }
   const handleTimerComplete = () => alert("Custom Completion Function");
-
   const options = {
-
-
     button: {
       backgroundColor: '#e91e63',
     },
