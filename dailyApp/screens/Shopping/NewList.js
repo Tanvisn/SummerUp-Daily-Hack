@@ -47,20 +47,15 @@ export default class NewList extends React.Component {
     
     .then((res) => {
       console.log("response");
-      //console.warn(res);
-      //Alert.alert(res.message);
       //if entry added
       if(res.success === true){
         alert(res.message);
         this.setState({called:true});
         this.props.navigation.navigate('Shopping');
-    //    this.toggleEdit();
-    //    this.props.route.params.beforeGoBack();
         
       }
       else {
         alert(res.message);
-        //console.warn("error");
       }
     })
     
@@ -71,7 +66,6 @@ export default class NewList extends React.Component {
     }
 
     toggleEdit(){
-    //  console.log(this.state);
       this.setState({edit:!(this.state.edit)})
     }
 
@@ -114,8 +108,6 @@ export default class NewList extends React.Component {
     }
   
     render() {
-      
-
       return (
         <View style={styles.container}>
         
@@ -174,17 +166,13 @@ export default class NewList extends React.Component {
 
     deleteItem(key) {
       this.state.itemArray.splice(key,1);
-      console.log("delete item");
       this.setState({ itemArray: this.state.itemArray,called:false });
     }
 
     toggleCheckItem(key) {
-      console.log(itt+"iiihi");
-   //   if(this.state.itemArray!==[]){
       var itt=this.state.itemArray.filter(it => it.key===key);
       itt[0].checked = !itt[0].checked;
       var item=this.state.itemArray.map(it => it.key===key?itt[0]:it);
-      //console.warn(item);
       this.setState({ itemArray: item,called:false });
     
     }
