@@ -68,9 +68,6 @@ export default class Profile extends React.Component {
     .then((response) => (response.json()))
     
     .then((res) => {
-      console.log("response");
-      console.log(res);
-      //Alert.alert(res.message);
       //if login successful
       if(res.success === true){
         this.state.age=3;
@@ -90,7 +87,6 @@ export default class Profile extends React.Component {
         alert("Something went wrong. Please try again");
       }
     })
-    
     .catch(err => {
       console.log(err);
     });
@@ -116,9 +112,6 @@ export default class Profile extends React.Component {
     .then((response) => (response.json()))
     
     .then((res) => {
-      console.log("response");
-      console.log(res);
-      //Alert.alert(res.message);
       //if entry added
       if(res.success === true){
         alert(res.message);
@@ -128,7 +121,6 @@ export default class Profile extends React.Component {
       }
       else {
         alert(res.message);
-        console.log("error");
       }
     })
     
@@ -158,12 +150,9 @@ export default class Profile extends React.Component {
     const authData = await AsyncStorage.getItem('auth_data');
 
     if(authData !== null){
-    //  console.log("hi");
       const authDataJson = JSON.parse(authData);
       age=authDataJson.age;
       name=authDataJson.name;
-      console.log(name);
-      console.log(authDataJson);
       this.setState({ 
         name: name,
         fname: authDataJson.fname,
@@ -175,16 +164,12 @@ export default class Profile extends React.Component {
   }
   componentDidMount(){
     this.getAuthToken();
-    
-    
   }
 
   render() {
     return (
-      
       <ScrollView>
       <View style={styles.container}>
-
       <View style={{ alignItems: 'center', }}>
       <Text style={styles.title}>My Profile </Text>
       </View>
@@ -291,10 +276,10 @@ const styles = StyleSheet.create({
       backgroundColor: 'white',
     },
 
-    text: {
+  text: {
       alignSelf: 'flex-start',
     },
-    paragraph: {
+  paragraph: {
 
       borderColor: 'black',
       borderRadius: 10,
@@ -304,20 +289,20 @@ const styles = StyleSheet.create({
       alignItems: 'center',
     },
 
-    header: {
+  header: {
       alignItems: 'flex-start',
       justifyContent: 'center',
       borderBottomWidth: 0,
       borderBottomColor: '#ddd',
     },
 
-    headerText: {
+  headerText: {
       color: 'white',
       fontSize: 18,
       padding: 24,
     },
 
-    navButton: {
+  navButton: {
       margin: 10,
       marginTop: 20,
       backgroundColor: 'rgb(29, 53, 87)', 
@@ -327,7 +312,7 @@ const styles = StyleSheet.create({
       alignItems: 'center',
     },
 
-    EditnavButton: {
+  EditnavButton: {
       margin: 10,
       marginTop: 20,
       backgroundColor: 'rgb(29, 53, 87)', 
@@ -337,13 +322,13 @@ const styles = StyleSheet.create({
       alignItems: 'center',
     },
 
-    navButtonTextSpecial: {
+  navButtonTextSpecial: {
       fontSize: 18,
 
       color: 'white',
     },
 
-    footer: {
+  footer: {
       position: 'absolute',
       bottom: 0,
       left: 0,
@@ -354,7 +339,7 @@ const styles = StyleSheet.create({
 
     },
 
-    input: {
+  input: {
       color: 'black',
       alignSelf: 'stretch',
       height: 50,
@@ -370,8 +355,8 @@ const styles = StyleSheet.create({
 
     },
 
-    scrollView: {
-   width: 300,
+  scrollView: {
+    width: 300,
     alignSelf: 'stretch',
     alignItems: 'center',
     justifyContent: 'flex-start',
@@ -380,8 +365,8 @@ const styles = StyleSheet.create({
     paddingLeft: 0,
     paddingRight: 0,
   },
+  
   title: {
-    //color: '#2BA189',
     fontWeight: 'bold',
     fontSize: 30,
     paddingBottom: 10,
@@ -391,13 +376,13 @@ const styles = StyleSheet.create({
 
   },
 
-    editBtn: {
+  editBtn: {
       position: 'absolute',
       top: 15,
       left: 300,
     },
 
-    saveButton: {
+  saveButton: {
       position: 'absolute',
       zIndex: 11,
       right: 5,
