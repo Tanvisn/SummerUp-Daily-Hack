@@ -24,10 +24,6 @@ export default class AllListSports extends React.Component {
 
   fetchLists(){
     console.log("fethcing");
- // if(Platform.OS === 'ios' || Platform.OS === 'android'){
-  //  return [{key:12345679, date:"22nd June 2020", title:"check", text:"this is some text"}];
- // }
-  //else{
     setTimeout(() => {
     fetch(url+'/fitnessGetAllLists',{
       method: 'POST',
@@ -63,13 +59,9 @@ export default class AllListSports extends React.Component {
   //}
 }
 componentDidMount(){
-//  if(Platform.OS === 'ios' || Platform.OS === 'android'){}
-//  else{
   this.focusListener = this.props.navigation.addListener('focus', ()=>{
     this.fetchLists();
   });
-  console.log(this.state.listArray);
-  //}
   console.log("fitness mount");
 }
 
@@ -80,12 +72,10 @@ componentWillUnmount(){
 
 reloadOnBack(){
   this.fetchLists();
-  //  this.setState({listArray: entries});
 }
 
 createLists(){
  return (this.state.listArray.map((val) => {
-  console.log("key"+val.key);
   return <List key={val.key} val={val}
   deleteMethod={ ()=> this.deleteList(val.key) }  view={ ()=> this.viewList(val.key)}/>
 })
@@ -93,28 +83,20 @@ createLists(){
 }
 
 viewList(key){
-  console.log("view");
-  console.log(key);
   var list=this.state.listArray.filter(it => it.key===key);
     //get text value from backend
-    console.log(this.state.listArray);
-    console.log(list);
-    //var itt = JSON.parse(ittt);
-  //  console.log(list[0]);
   this.props.navigation.navigate('NewListSports', {edit:false, key:key, date:list[0].date, name:this.props.route.params.name, items:list[0].list, allDates:this.state.listArray.filter(it => it.key!== key).map((dt)=>{return( dt.date)})})
 }
 
 
 
 render() {
-
   return (
     <View style={styles.container}>
     
     <View style={styles.header}>
     <Text style={styles.headerText}>- ALL LISTS -</Text>
     </View>
-
     <ScrollView style={styles.scrollContainer}>
     {this.createLists()}
 
@@ -147,9 +129,7 @@ addList() {
   }
 }
 
-deleteList(key) {
-  console.log("del");
-    
+deleteList(key) {  
     fetch(url+'/updateFitnessList',{
       method: 'POST',
       headers: {
@@ -168,19 +148,12 @@ deleteList(key) {
     
     .then((res) => {
       console.log("rese");
-      //console.warn(res);
-      //Alert.alert(res.message);
-      //if entry added
       if(res.success === true){
-    //    alert(res.message);
-    //    this.setState({listArray:res.content});
         var list = this.state.listArray.filter(it => it.key!==key);
         this.setState({listArray:list});
-        
       }
       else {
         alert(res.message);
-        //console.warn("error");
       }
     })
     
