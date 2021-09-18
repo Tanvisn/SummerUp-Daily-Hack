@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
-//import React in our project
 import { StyleSheet,Text,View, TouchableOpacity, TextInput } from 'react-native';
-//import all the required components
 import { Stopwatch, Timer } from 'react-native-stopwatch-timer';
-//importing library to use Stopwatch and Timer
 import DialogInput from 'react-native-dialog-input';
 export default class StopWatch extends Component {
 
@@ -134,17 +131,6 @@ export default class StopWatch extends Component {
 
       </TouchableOpacity>
       </View>
-
-
-     {/* <View style={styles.footer}>
-
-      <TouchableOpacity style={styles.navButton} onPress={() => this.props.navigation.navigate('Sports')}><Text style={styles.navButtonText}>My Plan</Text></TouchableOpacity>
-      <TouchableOpacity style={styles.navButton} onPress={() => this.props.navigation.navigate('StopWatch')}><Text style={styles.navButtonText}>Stop Watch</Text></TouchableOpacity>    
-      <TouchableOpacity style={styles.navButton} ><Text style={styles.navButtonTextSpecial}>Timer</Text></TouchableOpacity>
-      <TouchableOpacity style={styles.navButton} onPress={() => this.props.navigation.navigate('Fitness')}><Text style={styles.navButtonText}>Fitness</Text></TouchableOpacity>
-
-      </View>
-*/}
       </View>
       );
   }
@@ -152,8 +138,6 @@ export default class StopWatch extends Component {
 const handleTimerComplete = () => alert("Custom Completion Function");
 
 const options = {
-
-
   button: {
     backgroundColor: '#e91e63',
   },
