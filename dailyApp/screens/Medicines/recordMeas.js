@@ -63,22 +63,8 @@ export default class Record extends React.Component {
 
   sendResponse(){
     var edit=this.state.edit;
-    console.log("mymy");
     console.log(this.props.route.params);
     var data = this.state.date;
-    console.log("mymy");
-    /*if(data.title==="Event Reminder"){
-      edit=1;
-    }
-    else if(data.title==="Special Event Reminder"){
-      edit=2;
-    }
-    else if(data.title==="Medicine Reminder")
-      edit=3;
-    else if(data.title==="Measurement Reminder")
-      edit=4;
-    else if(data.title==="Appointment Reminder")
-      edit=5;*/
     if(edit<3){
     fetch(url+'/eventsConfirmButton',{
       method: 'POST',
@@ -159,47 +145,6 @@ export default class Record extends React.Component {
     });
   }
   }
-/*
-  sendMessage = async () => {
-    fetch(MESSAGE_ENPOINT, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        message: this.state.messageText,
-      }),
-    });
-    this.setState({ messageText: '' });
-  }
-
-  registerForPushNotificationsAsync = async () => {
-    const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-    if (status !== 'granted') {
-      return;
-    }
-    let token = await Notifications.getExpoPushTokenAsync();
-    return fetch(PUSH_REGISTRATION_ENDPOINT, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        token: {
-          value: token,
-        },
-        user: {
-          username: 'warly',
-          name: 'Dan Ward'
-        },
-      }),
-    });
-
-    this.notificationSubscription = Notifications.addListener(this.handleNotification);
-  }
-*/
 
   componentDidMount() {
     this.setEdit();
